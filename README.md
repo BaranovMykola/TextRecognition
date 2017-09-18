@@ -1,4 +1,4 @@
-# Детектор друкованого тексту
+# Text Recognition
 Project idea: program consumes image with printed text. Result of execution is text.
 <hr>
 <p>Workflow: 
