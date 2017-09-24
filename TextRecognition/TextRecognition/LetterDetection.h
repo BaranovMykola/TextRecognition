@@ -4,6 +4,8 @@
 
 cv::Mat letterHighligh(cv::Mat & img);
 
-void encloseLetters(cv::Mat & img, cv::Mat& source);
+std::vector<cv::Rect> encloseLetters(cv::Mat & thresholded);
 
 std::vector<cv::Rect> filterRectangles(std::vector<std::vector<cv::Point>> contours);
+
+void extractLetters(std::vector<cv::Rect> rects, cv::Mat& source);

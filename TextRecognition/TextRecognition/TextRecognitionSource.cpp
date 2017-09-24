@@ -30,13 +30,16 @@ int main(int argc, char* cargv[])
 		catch (const std::exception& e)
 		{
 			std::cout << "Error while opening: " << e.what() << std::endl;
+			continue;
 		}
 
 		cv::namedWindow("Img", CV_WINDOW_KEEPRATIO);
 
 		auto letterThresholded = letterHighligh(img);
-		encloseLetters(letterThresholded, img);
+		auto rects = encloseLetters(letterThresholded);
+		extractLetters(rects, img);
 		cv::imshow("Img", img);
+
 
 		if (cv::waitKey() == 27)
 		{
