@@ -33,15 +33,16 @@ int main(int argc, char* cargv[])
 		}
 
 		cv::namedWindow("Img", CV_WINDOW_KEEPRATIO);
-		cv::imshow("Img", img);
 
 		auto letterThresholded = letterHighligh(img);
-		encloseLetters(letterThresholded);
+		encloseLetters(letterThresholded, img);
+		cv::imshow("Img", img);
 
 		if (cv::waitKey() == 27)
 		{
 			return 0;
 		}
+		cv::destroyAllWindows();
 
 	}
 	while (command != "q");
