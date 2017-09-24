@@ -26,17 +26,23 @@ int main(int argc, char* cargv[])
 		try
 		{
 			loadImg(img, command);
-			cv::namedWindow("Img", CV_WINDOW_KEEPRATIO);
-			cv::imshow("Img", img);
-			if (cv::waitKey() == 27)
-			{
-				return 0;
-			}
 		}
 		catch (const std::exception& e)
 		{
 			std::cout << "Error while opening: " << e.what() << std::endl;
 		}
+
+		cv::namedWindow("Img", CV_WINDOW_KEEPRATIO);
+		cv::imshow("Img", img);
+
+		auto letterThresholded = letterHighligh(img);
+		encloseLetters(letterThresholded);
+
+		if (cv::waitKey() == 27)
+		{
+			return 0;
+		}
+
 	}
 	while (command != "q");
 	return 0;
