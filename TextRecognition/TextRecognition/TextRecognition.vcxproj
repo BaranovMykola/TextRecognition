@@ -154,10 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AnnSource.cpp" />
+    <ClCompile Include="LetterDetection.cpp" />
+    <ClCompile Include="TextRecognitionSource.cpp" />
     <ClCompile Include="TrainANN.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Contants.h" />
+    <ClInclude Include="LetterDetection.h" />
     <ClInclude Include="TrainANN.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
