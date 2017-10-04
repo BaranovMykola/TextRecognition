@@ -26,9 +26,7 @@ std::vector<cv::Rect> encloseLetters(cv::Mat& thresholded)
 {
 	std::vector<std::vector<cv::Point>> contours;
 	Mat edges;
-	Mat tclose;
-	morphologyEx(thresholded, tclose, MORPH_OPEN, getStructuringElement(MORPH_ELLIPSE, Size(9, 9)));
-	Canny(tclose, edges, 1, 200, 3);
+	Canny(thresholded, edges, 1, 200, 3);
 	Mat closed = edges;
 	findContours(closed, contours, RETR_EXTERNAL, cv::ContourApproximationModes::CHAIN_APPROX_NONE);
 	Mat draw = Mat::zeros(thresholded.size(), CV_8UC3);
