@@ -22,21 +22,21 @@ cv::Mat convertMatToVec(const cv::Mat& mat)
 
 Ptr<TrainData> loadTrainData()
 {
-	std::string path = "../samples/training_files/";
-	int samplesCount = 7780;
+	std::string path = "../samples/dataset/";
+	int samplesCount = 15490;
 	Mat trainData(samplesCount, 784, CV_32FC1);
-	Mat labels(samplesCount, 10, CV_32FC1);
+	Mat labels(samplesCount, 32, CV_32FC1);
 	int r = 0;
 	int j = 0;
 	cout << "Loading train data..." << endl;
-	for (int digit = 0; digit < 10; digit++)
+	for (int digit = 0; digit < 32; digit++)
 	{
 		cout << "Processing " << digit << " class" << endl;
-		for (int i = 0; i <= 1000; i++)
+		for (int i = 0; i <= 2000; i++)
 		{
 			std::string file = path + std::to_string(digit) + "/" + std::to_string(i) + ".jpg";
 			Mat sample = imread(file, CV_LOAD_IMAGE_GRAYSCALE);
-			//threshold(sample, sample, 100, 255, THRESH_BINARY_INV | THRESH_OTSU);
+			threshold(sample, sample, 100, 255, THRESH_BINARY_INV | THRESH_OTSU);
 			if (sample.empty())
 			{
 				continue;
@@ -44,7 +44,7 @@ Ptr<TrainData> loadTrainData()
 			auto vec = convertMatToVec(sample);
 			vec.row(0).copyTo(trainData.row(r));
 
-			for (int k = 0; k < 10; k++)
+			for (int k = 0; k < 32; k++)
 			{
 				labels.at<float>(r, k) = k == digit ? 1 : 0;
 			}
@@ -68,7 +68,7 @@ void trainANN(std::string saveTo)
 	Mat layersSize = Mat(3, 1, CV_16U);
 	layersSize.row(0) = Scalar(784);
 	layersSize.row(1) = Scalar(500);
-	layersSize.row(2) = Scalar(10);
+	layersSize.row(2) = Scalar(32);
 	mlp->setLayerSizes(layersSize);
 
 	mlp->setActivationFunction(ANN_MLP::ActivationFunctions::SIGMOID_SYM, 0, 1);
@@ -107,14 +107,16 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 	int correct = 0;
 	int j = 63;
 	std::vector<int> acc;
-	for (int digit = 0; digit < 10; digit++)
+	for (int digit = 24; digit < 32; digit++)
 	{
-		for (int i = 700; i < 900; i++)
+		std::cout << "Processing " << digit << " class of samples... ";
+		for (int i = 0; i < 2000; i++)
 		{
-			std::string path = "../samples/test_files/";
+			std::string path = "../samples/dataset/";
 			std::string file = path + std::to_string(digit) + "/" + std::to_string(i) + ".jpg";
 			auto sample = imread(file, CV_LOAD_IMAGE_GRAYSCALE);
-			//threshold(sample, sample, 100, 255, THRESH_BINARY_INV | THRESH_OTSU);
+			threshold(sample, sample, 100, 255, THRESH_BINARY_INV | THRESH_OTSU);
+			bool empty = sample.empty();
 			if (sample.empty())
 			{
 				//cout << "File " << file << " not found" << endl;
@@ -125,7 +127,7 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			mlp->predict(vec, res);
 			//svm->predict(vec, res);
 			float* row = res.ptr<float>(0);
-			auto max = std::max_element(row, row + 10);
+			auto max = std::max_element(row, row + 32);
 			int d = std::distance(row, max);
 			if (d == digit)
 			{
@@ -139,7 +141,7 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 		total = 0;
 		correct = 0;
 	}
-	std::cout << "total acc: " << std::accumulate(acc.begin(), acc.end(), 0) / 10.0 << endl;
+	std::cout << "total acc: " << std::accumulate(acc.begin(), acc.end(), 0) / 32.0 << endl;
 }
 
 void printLetters()
