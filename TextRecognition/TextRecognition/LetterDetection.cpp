@@ -41,7 +41,7 @@ std::vector<cv::Rect> encloseLetters(cv::Mat& thresholded)
 		}
 	}
 	drawContours(thresholded, contours, -1, Scalar(0, 255, 0), 1);
-	return rects;
+		return rects;
 }
 
 void extractLetters(std::vector<cv::Rect> rects, cv::Mat& source)
