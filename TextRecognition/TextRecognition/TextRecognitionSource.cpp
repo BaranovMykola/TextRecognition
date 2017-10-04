@@ -22,7 +22,6 @@ int main(int argc, char* cargv[])
 {
 	time_t currentTime = time(0);
 	std::cout << "Started programm at\t" << asctime(localtime(&currentTime)) << std::endl;
-	loadTrainData();
 	testANN(loadANN("letters_classifier"));
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;

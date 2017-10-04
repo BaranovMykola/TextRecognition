@@ -1,1 +1,2 @@
 ../samples/text filter=lfs diff=lfs merge=lfs -text
+../samples/Letters.docx filter=lfs diff=lfs merge=lfs -text

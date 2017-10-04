@@ -107,12 +107,14 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 	int correct = 0;
 	int j = 63;
 	std::vector<int> acc;
-	for (int digit = 24; digit < 32; digit++)
+	int classes = 4;
+	int allClasses = 32;
+	for (int digit = 0; digit < classes; digit++)
 	{
 		std::cout << "Processing " << digit << " class of samples... ";
 		for (int i = 0; i < 2000; i++)
 		{
-			std::string path = "../samples/dataset/";
+			std::string path = "../samples/dataset/test_data/";
 			std::string file = path + std::to_string(digit) + "/" + std::to_string(i) + ".jpg";
 			auto sample = imread(file, CV_LOAD_IMAGE_GRAYSCALE);
 			threshold(sample, sample, 100, 255, THRESH_BINARY_INV | THRESH_OTSU);
@@ -127,7 +129,7 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			mlp->predict(vec, res);
 			//svm->predict(vec, res);
 			float* row = res.ptr<float>(0);
-			auto max = std::max_element(row, row + 32);
+			auto max = std::max_element(row, row + allClasses);
 			int d = std::distance(row, max);
 			if (d == digit)
 			{
@@ -141,7 +143,7 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 		total = 0;
 		correct = 0;
 	}
-	std::cout << "total acc: " << std::accumulate(acc.begin(), acc.end(), 0) / 32.0 << endl;
+	std::cout << "\tTotal accuracy:\t" << std::accumulate(acc.begin(), acc.end(), 0) / (double)classes << "%" << endl;
 }
 
 void printLetters()
