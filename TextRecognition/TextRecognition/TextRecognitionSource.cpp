@@ -21,8 +21,18 @@ void loadImg(cv::Mat& img, const std::string& fileName)
 int main(int argc, char* cargv[])
 {
 	time_t currentTime = time(0);
+	std::string action;
+	std::cout << ">> ";
+	std::cin >> action;
 	std::cout << "Started programm at\t" << asctime(localtime(&currentTime)) << std::endl;
-	testANN(loadANN("letters_classifier"));
+	if (action == "train")
+	{
+		trainANN("certain_letters_classifier");
+	}
+	else if (action == "test")
+	{
+		testANN(loadANN("certain_letters_classifier"));
+	}
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;
 	std::cout << "Program stopped before exit... (Press any key to continue)" << std::endl;

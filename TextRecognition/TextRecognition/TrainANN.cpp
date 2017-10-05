@@ -22,7 +22,7 @@ cv::Mat convertMatToVec(const cv::Mat& mat)
 
 Ptr<TrainData> loadTrainData()
 {
-	std::string path = "../samples/dataset/";
+	std::string path = "../samples/dataset/train_data/";
 	int samplesCount = 15490;
 	Mat trainData(samplesCount, 784, CV_32FC1);
 	Mat labels(samplesCount, 32, CV_32FC1);
@@ -65,10 +65,11 @@ void trainANN(std::string saveTo)
 	mlp = ANN_MLP::create();
 
 
-	Mat layersSize = Mat(3, 1, CV_16U);
+	Mat layersSize = Mat(4, 1, CV_16U);
 	layersSize.row(0) = Scalar(784);
-	layersSize.row(1) = Scalar(500);
-	layersSize.row(2) = Scalar(32);
+	layersSize.row(1) = Scalar(28);
+	layersSize.row(2) = Scalar(28);
+	layersSize.row(3) = Scalar(32);
 	mlp->setLayerSizes(layersSize);
 
 	mlp->setActivationFunction(ANN_MLP::ActivationFunctions::SIGMOID_SYM, 0, 1);
@@ -76,7 +77,7 @@ void trainANN(std::string saveTo)
 	TermCriteria termCrit = TermCriteria(
 		TermCriteria::Type::COUNT + TermCriteria::Type::EPS,
 		10000,
-		0.0001
+		0.1
 	);
 	mlp->setTermCriteria(termCrit);
 
@@ -107,9 +108,9 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 	int correct = 0;
 	int j = 63;
 	std::vector<int> acc;
-	int classes = 4;
+	int classes = 32;
 	int allClasses = 32;
-	for (int digit = 0; digit < classes; digit++)
+	for (int digit = 0; digit < allClasses; digit++)
 	{
 		std::cout << "Processing " << digit << " class of samples... ";
 		for (int i = 0; i < 2000; i++)
