@@ -31,7 +31,7 @@ int main(int argc, char* cargv[])
 	}
 	else if (action == "test")
 	{
-		testANN(loadANN("certain_letters_classifier"));
+		testANN(loadANN("28x28_MLP_99_percent"));
 	}
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;

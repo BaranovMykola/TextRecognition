@@ -136,6 +136,11 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			{
 				++correct;
 			}
+			else if(*max > 0.8)
+			{
+				imshow("fail", sample);
+				waitKey();
+			}
 			++total;
 		}
 		std::cout << "Total: " << total << "\tCorrect: " << correct << "\t(" << 100 * correct / (double)total << "%)" << endl;
