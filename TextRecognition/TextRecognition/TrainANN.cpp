@@ -26,13 +26,13 @@ cv::Mat convertMatToVec(const cv::Mat& mat)
 Ptr<TrainData> createTrainData()
 {
 	std::string path = "../samples/dataset/train_data/";
-	int samplesCount = 15490;
+	int samplesCount = 15490+1007;
 	Mat trainData(samplesCount, 784, CV_32FC1);
-	Mat labels(samplesCount, 32, CV_32FC1);
+	Mat labels(samplesCount, 33, CV_32FC1);
 	int r = 0;
 	int j = 0;
 	cout << "Loading train data..." << endl;
-	for (int digit = 0; digit < 32; digit++)
+	for (int digit = 0; digit < 33; digit++)
 	{
 		cout << "Processing " << digit << " class" << endl;
 		for (int i = 0; i <= 2000; i++)
@@ -47,7 +47,7 @@ Ptr<TrainData> createTrainData()
 			auto vec = convertMatToVec(sample);
 			vec.row(0).copyTo(trainData.row(r));
 
-			for (int k = 0; k < 32; k++)
+			for (int k = 0; k < 33; k++)
 			{
 				labels.at<float>(r, k) = k == digit ? 1 : 0;
 			}
@@ -72,7 +72,7 @@ void trainANN(std::string saveTo)
 	layersSize.row(0) = Scalar(784);
 	layersSize.row(1) = Scalar(28);
 	layersSize.row(2) = Scalar(28);
-	layersSize.row(3) = Scalar(32);
+	layersSize.row(3) = Scalar(33);
 	mlp->setLayerSizes(layersSize);
 
 	mlp->setActivationFunction(ANN_MLP::ActivationFunctions::SIGMOID_SYM, 0, 1);
@@ -111,8 +111,8 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 	int correct = 0;
 	int j = 63;
 	std::vector<int> acc;
-	int classes = 32;
-	int allClasses = 32;
+	int classes = 33;
+	int allClasses = 33;
 	for (int digit = 0; digit < allClasses; digit++)
 	{
 		std::cout << "Processing " << digit << " class of samples... ";
@@ -138,11 +138,6 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			if (d == digit)
 			{
 				++correct;
-			}
-			else if(*max > 0.8)
-			{
-				imshow("fail", sample);
-				waitKey();
 			}
 			++total;
 		}

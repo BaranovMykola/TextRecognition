@@ -27,11 +27,11 @@ int main(int argc, char* cargv[])
 	std::cout << "Started programm at\t" << asctime(localtime(&currentTime)) << std::endl;
 	if (action == "train")
 	{
-		trainANN("certain_letters_classifier_T");
+		trainANN("28x28_MLP_H0");
 	}
 	else if (action == "test")
 	{
-		testANN(loadANN("28x28_MLP_99_percent"));
+		testANN(loadANN(ClassifierPrefix+"28x28_MLP_H0"));
 	}
 	else if (action == "print")
 	{
