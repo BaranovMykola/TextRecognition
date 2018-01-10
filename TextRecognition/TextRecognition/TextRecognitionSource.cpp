@@ -40,7 +40,40 @@ int main(int argc, char* cargv[])
 		std::cin >> count;
 		printLetters(count);
 	}
+	else if (action == "crop")
+	{
+		cv::Mat img;
+		do
+		{
+			std::cout << ">> ";
+			std::cin >> action;
+			try
+			{
+				loadImg(img, action);
+			}
+			catch (const std::exception& e)
+			{
+				std::cout << "Error while opening: " << e.what() << std::endl;
+				continue;
+			}
 
+			cv::namedWindow("Img", CV_WINDOW_KEEPRATIO);
+
+			auto letterThresholded = letterHighligh(img);
+			auto rects = encloseLetters(letterThresholded);
+			extractLetters(rects, img);
+			cv::imshow("Img", img);
+
+
+			if (cv::waitKey() == 27)
+			{
+				return 0;
+			}
+			cv::destroyAllWindows();
+
+		}
+		while (action != "q");
+	}
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;
 	std::cout << "Program stopped before exit... (Press any key to continue)" << std::endl;
