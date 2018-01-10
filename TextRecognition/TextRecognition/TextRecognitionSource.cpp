@@ -33,6 +33,14 @@ int main(int argc, char* cargv[])
 	{
 		testANN(loadANN("28x28_MLP_99_percent"));
 	}
+	else if (action == "print")
+	{
+		int count;
+		std::cout << "count >> ";
+		std::cin >> count;
+		printLetters(count);
+	}
+
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;
 	std::cout << "Program stopped before exit... (Press any key to continue)" << std::endl;

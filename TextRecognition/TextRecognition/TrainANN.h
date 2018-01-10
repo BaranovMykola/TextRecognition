@@ -12,4 +12,4 @@ cv::Ptr<cv::ml::ANN_MLP> loadANN(std::string file);
 
 void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp);
 
-void printLetters();
+void printLetters(int count);

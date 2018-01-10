@@ -152,13 +152,13 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 	std::cout << "\tTotal accuracy:\t" << std::accumulate(acc.begin(), acc.end(), 0) / (double)classes << "%" << endl;
 }
 
-void printLetters()
+void printLetters(int count)
 {
 	setlocale(LC_CTYPE, "ukr");
 	std::string letters = "ÀàÁáÂâÃã¥´ÄäÅåªºÆæÇçÈè²³¯¿ÉéÊêËëÌìÍíÎîÏïÐðÑñÒòÓóÔôÕõÖö×÷ØøÙùÜüÞþßÿ";
 	for (auto i : letters)
 	{
-		for (int j = 0; j < 250; j++)
+		for (int j = 0; j < count; j++)
 		{
 			cout << i << " ";
 		}
