@@ -27,7 +27,7 @@ int main(int argc, char* cargv[])
 	std::cout << "Started programm at\t" << asctime(localtime(&currentTime)) << std::endl;
 	if (action == "train")
 	{
-		trainANN("certain_letters_classifier");
+		trainANN("certain_letters_classifier_T");
 	}
 	else if (action == "test")
 	{

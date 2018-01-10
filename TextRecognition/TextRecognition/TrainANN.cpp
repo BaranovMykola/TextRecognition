@@ -3,6 +3,9 @@
 #include <opencv2\highgui.hpp>
 #include <iostream>
 #include <numeric>
+#include <fstream>
+
+#include "Contants.h"
 
 using namespace std;
 using namespace cv;
@@ -20,7 +23,7 @@ cv::Mat convertMatToVec(const cv::Mat& mat)
 	return vec;
 }
 
-Ptr<TrainData> loadTrainData()
+Ptr<TrainData> createTrainData()
 {
 	std::string path = "../samples/dataset/train_data/";
 	int samplesCount = 15490;
@@ -60,7 +63,7 @@ Ptr<TrainData> loadTrainData()
 
 void trainANN(std::string saveTo)
 {
-	auto t = loadTrainData();
+	auto t = createTrainData();
 	Ptr<ANN_MLP> mlp;
 	mlp = ANN_MLP::create();
 
@@ -91,7 +94,7 @@ void trainANN(std::string saveTo)
 	);
 	cout << "ANN trained" << endl;
 	cout << "Saving ANN..." << endl;
-	mlp->save(saveTo);
+	mlp->save(ClassifierPrefix+saveTo);
 	cout << "ANN saved" << endl;
 }
 

@@ -4,7 +4,7 @@
 
 cv::Mat convertMatToVec(const cv::Mat & mat);
 
-cv::Ptr<cv::ml::TrainData> loadTrainData();
+cv::Ptr<cv::ml::TrainData> createTrainData();
 
 void trainANN(std::string saveTo);
 
