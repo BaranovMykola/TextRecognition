@@ -93,13 +93,14 @@ int main(int argc, char* cargv[])
 			}
 
 			auto thresh = letterHighligh(img);
-			int min;
-			int max;
-			auto freq = calculateProjectionHist(thresh, &min, &max);
-			auto hist = calculateGraphicHist(freq, max);
+			//int min;
+			//int max;
+			//auto freq = calculateProjectionHist(thresh, &min, &max);
+			//auto hist = calculateGraphicHist(freq, max);
 
-			auto lines = segmentLines(freq, min, max);
-			visualizeLines(thresh, lines, 300);
+			//auto lines = segmentLines(freq, min, max);
+			//visualizeLines(thresh, lines, 300);
+			findSkew(thresh);
 
 		}
 		while (true);

@@ -9,3 +9,9 @@ cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins = 300)
 std::vector<bool> segmentLines(std::vector<int> freq, int min, int max);
 
 void visualizeLines(cv::Mat& img, std::vector<bool> lines, int width);
+
+cv::Mat rotate(cv::Mat& source, int angle);
+
+int findSkew(cv::Mat binary);
+
+int countLines(std::vector<bool> lines);
