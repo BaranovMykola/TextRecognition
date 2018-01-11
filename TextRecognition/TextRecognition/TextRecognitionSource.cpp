@@ -98,6 +98,9 @@ int main(int argc, char* cargv[])
 			auto freq = calculateProjectionHist(thresh, &min, &max);
 			auto hist = calculateGraphicHist(freq, max);
 
+			auto lines = segmentLines(freq, min, max);
+			visualizeLines(thresh, lines, 300);
+
 		}
 		while (true);
 	}

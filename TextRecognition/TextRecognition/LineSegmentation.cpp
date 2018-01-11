@@ -48,3 +48,40 @@ cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
 	}
 	return hist;
 }
+
+std::vector<bool> segmentLines(std::vector<int> freq, int min, int max)
+{
+	std::vector<bool> lines;
+	for (auto i : freq)
+	{
+		if (abs(i - max) > abs(i - min))
+		{
+			//line
+			lines.push_back(true);
+		}
+		else
+		{
+			//space
+			lines.push_back(false);
+		}
+	}
+	return lines;
+}
+
+void visualizeLines(cv::Mat & img, std::vector<bool> lines, int width)
+{
+	for (int i = 0; i < img.rows && i < lines.size(); i++)
+	{
+		Scalar color;
+		if (lines[i])
+		{
+			color = Scalar::all(0);
+		}
+		else
+		{
+			color = Scalar::all(255);
+		}
+
+		line(img, Point(0, i), Point(width, i), color);
+	}
+}
