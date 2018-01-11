@@ -12,7 +12,7 @@
 
 void loadImg(cv::Mat& img, const std::string& fileName)
 {
-	img = cv::imread(TextSamplePathPrefix+fileName+".jpg");
+	img = cv::imread(TestSamplePathPrefix+fileName+".jpg");
 	if (img.empty())
 	{
 		throw std::exception("Invalid name");
