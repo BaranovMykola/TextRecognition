@@ -8,6 +8,7 @@
 #include "Contants.h"
 #include "LetterDetection.h"
 #include "TrainANN.h"
+#include "LineSegmentation.h"
 
 void loadImg(cv::Mat& img, const std::string& fileName)
 {
@@ -74,6 +75,33 @@ int main(int argc, char* cargv[])
 		}
 		while (action != "q");
 	}
+	else if (action == "line")
+	{
+		do
+		{
+			cv::Mat img;
+			std::cout << ">> ";
+			std::cin >> action;
+			try
+			{
+				loadImg(img, action);
+			}
+			catch (const std::exception& e)
+			{
+				std::cout << "Error while opening: " << e.what() << std::endl;
+				continue;
+			}
+
+			auto thresh = letterHighligh(img);
+			int min;
+			int max;
+			auto freq = calculateProjectionHist(thresh, &min, &max);
+			auto hist = calculateGraphicHist(freq, max);
+
+		}
+		while (true);
+	}
+
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;
 	std::cout << "Program stopped before exit... (Press any key to continue)" << std::endl;
