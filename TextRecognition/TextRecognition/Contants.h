@@ -7,3 +7,4 @@ const std::string TextSamplePathPrefix = SamplePathPRefix + "letters/original/";
 const std::string TestSamplePathPrefix = SamplePathPRefix + "letters/test/";
 const std::string TextDatasetPathPrefix = SamplePathPRefix + "dataset/source/";
 
+const float SkrewRestoringImageSize = 500;

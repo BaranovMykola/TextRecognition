@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <numeric>
 #include <opencv2\imgproc.hpp>
+#include <iostream>
+#include "Contants.h"
 
 using namespace cv;
 
@@ -132,17 +134,17 @@ int findSkew(cv::Mat binary)
 	int angle = 0;
 	int min;
 	int max;
+	float sizeModifier = std::min({ binary.cols / SkrewRestoringImageSize, binary.rows / SkrewRestoringImageSize });
+	sizeModifier = sizeModifier >= 1 ? sizeModifier : 1;
+	Mat resizedImage;
+	cv::resize(binary, resizedImage, Size(binary.cols/sizeModifier, binary.rows/sizeModifier),0,0,INTER_NEAREST);
 
-	for (int i = 0; i < 360; i++)
+	for (int i = -90; i <= 90; i+=5)
 	{
-		cv::Mat thresh = rotate(binary, i);
+		cv::Mat thresh = rotate(resizedImage, i);
 		auto freq = calculateProjectionHist(thresh, &min, &max);
-		//auto hist = calculateGraphicHist(freq, max);
 
 		auto lines = segmentLines(freq, min, max);
-		//visualizeLines(thresh, lines, 300);
-
-
 
 		int aver = std::accumulate(freq.begin(), freq.end(), 0);
 		aver /= freq.size();
@@ -154,22 +156,31 @@ int findSkew(cv::Mat binary)
 			maxDev = dev;
 			angle = i;
 		}
-
-		//if (minLines > countLines(lines))
-		//{
-		//	minLines = countLines(lines); // ---------- opt
-		//	angle = i;
-		//}
-
-		//std::vector<int> distr(11);
-		////int mod = freq.size() / 10;
-		//for (int j = 0; i < freq.size(); j++)
-		//{
-
-		//	distr[j / (freq.size() / 10)]+=freq[j];
-		//}
+		std::cout << "i: " << i << std::endl;
 
 	}
+
+	for (int i = angle-5; i <= angle+5; i ++)
+	{
+		cv::Mat thresh = rotate(resizedImage, i);
+		auto freq = calculateProjectionHist(thresh, &min, &max);
+
+		auto lines = segmentLines(freq, min, max);
+
+		int aver = std::accumulate(freq.begin(), freq.end(), 0);
+		aver /= freq.size();
+
+		double dev = accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem) { return acc + pow((aver - elem), 2); });
+
+		if (maxDev < dev)
+		{
+			maxDev = dev;
+			angle = i;
+		}
+		std::cout << "i: " << i << std::endl;
+
+	}
+
 	binary = rotate(binary, angle);
 	return angle;
 }
