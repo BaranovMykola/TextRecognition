@@ -15,3 +15,5 @@ cv::Mat rotate(cv::Mat& source, int angle);
 int findSkew(cv::Mat binary);
 
 int countLines(std::vector<bool> lines);
+
+void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev);

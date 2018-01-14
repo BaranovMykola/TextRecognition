@@ -130,7 +130,7 @@ int findDev(std::vector<bool> lines)
 
 int findSkew(cv::Mat binary)
 {
-	int maxDev = 0;
+	long long maxDev = 0;
 	int angle = 0;
 	int min;
 	int max;
@@ -141,44 +141,12 @@ int findSkew(cv::Mat binary)
 
 	for (int i = -90; i <= 90; i+=5)
 	{
-		cv::Mat thresh = rotate(resizedImage, i);
-		auto freq = calculateProjectionHist(thresh, &min, &max);
-
-		auto lines = segmentLines(freq, min, max);
-
-		int aver = std::accumulate(freq.begin(), freq.end(), 0);
-		aver /= freq.size();
-
-		double dev = accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem) { return acc + pow((aver - elem), 2); });
-
-		if (maxDev < dev)
-		{
-			maxDev = dev;
-			angle = i;
-		}
-		std::cout << "i: " << i << std::endl;
-
+		_tryAngle(angle, i, resizedImage, maxDev);
 	}
 
-	for (int i = angle-5; i <= angle+5; i ++)
+	for (int i = angle-4; i <= angle+4 && i != 0; i++)
 	{
-		cv::Mat thresh = rotate(resizedImage, i);
-		auto freq = calculateProjectionHist(thresh, &min, &max);
-
-		auto lines = segmentLines(freq, min, max);
-
-		int aver = std::accumulate(freq.begin(), freq.end(), 0);
-		aver /= freq.size();
-
-		double dev = accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem) { return acc + pow((aver - elem), 2); });
-
-		if (maxDev < dev)
-		{
-			maxDev = dev;
-			angle = i;
-		}
-		std::cout << "i: " << i << std::endl;
-
+		_tryAngle(angle, i, resizedImage, maxDev);
 	}
 
 	binary = rotate(binary, angle);
@@ -196,4 +164,25 @@ int countLines(std::vector<bool> lines)
 		}
 	}
 	return count;
+}
+
+void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev)
+{
+	int min;
+	int max;
+	cv::Mat thresh = rotate(resizedImage, newAngle);
+	auto freq = calculateProjectionHist(thresh, &min, &max);
+
+	auto lines = segmentLines(freq, min, max);
+
+	int aver = std::accumulate(freq.begin(), freq.end(), 0);
+	aver /= freq.size();
+
+	double dev = accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem) { return acc + pow((aver - elem), 2); });
+
+	if (maxDev < dev)
+	{
+		maxDev = dev;
+		angle = newAngle;
+	}
 }
