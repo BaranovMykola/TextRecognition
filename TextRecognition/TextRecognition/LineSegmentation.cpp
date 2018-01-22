@@ -3,7 +3,9 @@
 #include <numeric>
 #include <opencv2\imgproc.hpp>
 #include <iostream>
+
 #include "Contants.h"
+#include "LetterDetection.h"
 
 using namespace cv;
 
@@ -199,16 +201,58 @@ std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary)
 {
 	int min;
 	int max;
-	std::vector<int> freq = calculateProjectionHist(binary, &min, &max);
 
 	std::map<Rect, int, RectComparator> rows;
 
+	auto copy = binary.clone();
+	auto rectangles = encloseLetters(binary);
+
+	for (auto i : rectangles)
+	{
+		copy(i) = Scalar::all(0);
+	}
+
+	std::vector<int> freq = calculateProjectionHist(copy, &min, &max);
 	double average = std::accumulate(freq.begin(), freq.end(), 0) / (double)freq.size();
 	double thresholdLevel = (average + min) / 2;
-
 	threshold(freq, thresholdLevel, max);
 
 	auto h = calculateGraphicHist(freq, max);
+
+	int s;
+	int e;
+	bool cap = false;
+	int line = 0;
+	for (int i = 0; i < freq.size(); i++)
+	{
+		if (freq[i] == max && !cap)
+		{
+			s = i;
+			cap = true;
+		}
+		if (freq[i] != max && cap)
+		{
+			cap = false;
+			e = i;
+
+			for (auto j : rectangles)
+			{
+				if (j.y <= s && j.y + j.height >= s
+					||
+					j.y <= e && j.y + j.height >= e
+					||
+					j.y >= s && j.y + j.height <= e
+					||
+					j.y < s && j.y + j.height > e)
+				{
+					binary(j) = 100;
+					rows[j] = line;
+				}
+			}
+			++line;
+
+		}
+	}
 
 	return rows;
 }
