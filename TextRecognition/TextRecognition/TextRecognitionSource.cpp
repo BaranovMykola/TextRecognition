@@ -93,14 +93,13 @@ int main(int argc, char* cargv[])
 			}
 
 			auto thresh = letterHighligh(img);
-			//int min;
-			//int max;
-			//auto freq = calculateProjectionHist(thresh, &min, &max);
-			//auto hist = calculateGraphicHist(freq, max);
+		
+			auto skew = findSkew(thresh);
 
-			//auto lines = segmentLines(freq, min, max);
-			//visualizeLines(thresh, lines, 300);
-			findSkew(thresh);
+			auto binary = rotate(thresh, skew);
+
+			auto res = sortCharacters(binary);
+
 
 		}
 		while (true);

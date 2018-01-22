@@ -187,9 +187,30 @@ void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDe
 	}
 }
 
-std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary, std::vector<int> freq)
+void threshold(std::vector<int>& freq, int t, int max)
 {
-	return std::map<cv::Rect, int, RectComparator>();
+	for (auto& i : freq)
+	{
+		i = i >= t ? max : i;
+	}
+}
+
+std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary)
+{
+	int min;
+	int max;
+	std::vector<int> freq = calculateProjectionHist(binary, &min, &max);
+
+	std::map<Rect, int, RectComparator> rows;
+
+	double average = std::accumulate(freq.begin(), freq.end(), 0) / (double)freq.size();
+	double thresholdLevel = (average + min) / 2;
+
+	threshold(freq, thresholdLevel, max);
+
+	auto h = calculateGraphicHist(freq, max);
+
+	return rows;
 }
 
 
