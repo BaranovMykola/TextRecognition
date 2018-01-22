@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="LetterDetection.cpp" />
     <ClCompile Include="LineSegmentation.cpp" />
+    <ClCompile Include="RectComparator.cpp" />
     <ClCompile Include="TextRecognitionSource.cpp" />
     <ClCompile Include="TrainANN.cpp" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="Contants.h" />
     <ClInclude Include="LetterDetection.h" />
     <ClInclude Include="LineSegmentation.h" />
+    <ClInclude Include="RectComparator.h" />
     <ClInclude Include="TrainANN.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

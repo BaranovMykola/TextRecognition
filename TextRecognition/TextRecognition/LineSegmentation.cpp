@@ -186,3 +186,10 @@ void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDe
 		angle = newAngle;
 	}
 }
+
+std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary, std::vector<int> freq)
+{
+	return std::map<cv::Rect, int, RectComparator>();
+}
+
+

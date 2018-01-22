@@ -10,7 +10,12 @@
     <ClCompile Include="TrainANN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LineSegmentation.cpp" />
+    <ClCompile Include="RectComparator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineSegmentation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -22,7 +27,12 @@
     <ClInclude Include="TrainANN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LineSegmentation.h" />
+    <ClInclude Include="LineSegmentation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RectComparator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

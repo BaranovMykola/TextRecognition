@@ -1,6 +1,9 @@
 #pragma once
 #include <opencv2\core.hpp>
 #include <vector>
+#include <map>
+
+#include "RectComparator.h"
 
 std::vector<int> calculateProjectionHist(cv::Mat& binary, int* min = 0, int* max = 0);
 
@@ -17,3 +20,5 @@ int findSkew(cv::Mat binary);
 int countLines(std::vector<bool> lines);
 
 void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev);
+
+std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat& binary, std::vector<int> freq);
