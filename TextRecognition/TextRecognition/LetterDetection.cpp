@@ -2,6 +2,7 @@
 #include <opencv2\highgui.hpp>
 #include <opencv2\imgproc.hpp>
 #include <vector>
+#include <numeric>
 #include "Contants.h"
 
 using namespace cv;
@@ -41,7 +42,22 @@ std::vector<cv::Rect> encloseLetters(cv::Mat& thresholded)
 		}
 	}
 	drawContours(thresholded, contours, -1, Scalar(0, 255, 0), 1);
-		return rects;
+	return rects;
+}
+
+int averLetterHight(cv::Mat& bin)
+{
+	auto letterRegions = encloseLetters(bin);
+	return std::accumulate(letterRegions.begin(), letterRegions.end(), 0.0, [](double acc, Rect r) { return r.height + acc; }) / letterRegions.size();
+}
+
+cv::Mat closeCharacters(cv::Mat& binary)
+{
+	Mat closed;
+	int closingSize = averLetterHight(binary.clone());
+	auto kern = getStructuringElement(MORPH_ELLIPSE, Size(1, closingSize / 3 + 1));
+	morphologyEx(binary, closed, MORPH_OPEN, kern, Point(0, closingSize / 3));
+	return closed;
 }
 
 void extractLetters(std::vector<cv::Rect> rects, cv::Mat& source)

@@ -104,6 +104,23 @@ int main(int argc, char* cargv[])
 		}
 		while (true);
 	}
+	else if (action == "char")
+	{
+		std::cout << ">> ";
+		std::cin >> action;
+		cv::Mat img;
+		loadImg(img, action);
+
+
+
+		img = letterHighligh(img);
+
+		img = rotate(img, findSkew(img));
+
+		img = closeCharacters(img);
+
+		encloseLetters(img);
+	}
 
 	currentTime = time(0);
 	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;

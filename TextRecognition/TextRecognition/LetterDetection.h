@@ -6,6 +6,10 @@ cv::Mat letterHighligh(cv::Mat & img);
 
 std::vector<cv::Rect> encloseLetters(cv::Mat & thresholded);
 
+int averLetterHight(cv::Mat & bin);
+
+cv::Mat closeCharacters(cv::Mat& binary);
+
 std::vector<cv::Rect> filterRectangles(std::vector<std::vector<cv::Point>> contours);
 
 void extractLetters(std::vector<cv::Rect> rects, cv::Mat& source);
