@@ -9,7 +9,7 @@
 
 typedef std::vector<int> Spaces;
 
-std::vector<int, Spaces> segmentWords(cv::Mat& binary);
+std::map<int, Spaces> segmentWords(cv::Mat& binary);
 
 /* @brief
 

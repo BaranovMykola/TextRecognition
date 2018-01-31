@@ -1,4 +1,5 @@
 #include "BinaryProcessing.h"
+#include "LineSegmentation.h"
 
 cv::Mat fillLetters(cv::Mat & binary)
 {
@@ -15,19 +16,21 @@ std::vector<int> extractLinesPosition(std::vector<int> freq)
 {
 	std::vector<int> linesPoistion;
 
-	thresholdLines(freq);
+	freq = thresholdLines(freq);
+
+	int max = *std::max_element(freq.begin(), freq.end());
 
 	bool captured = false;
 	int strart;
 	int end;
 	for (int i = 1; i < freq.size(); i++)
 	{
-		if (!captured && freq[i] != 0 && freq[i - 1] == 0)
+		if (!captured && freq[i] == max && freq[i - 1] != max)
 		{
 			captured = true;
 			strart = i;
 		}
-		else if (captured && freq[i] == 0)
+		else if (captured && freq[i] != max)
 		{
 			captured = false;
 			end = i;

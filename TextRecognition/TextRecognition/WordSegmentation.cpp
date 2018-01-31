@@ -1,15 +1,56 @@
 #include "WordSegmentation.h"
 
-std::vector<int, Spaces> segmentWords(cv::Mat & binary)
+#include <opencv2\imgproc.hpp>
+
+using namespace cv;
+
+std::map<int, Spaces> segmentWords(cv::Mat & binary)
 {
-	std::vector<int, Spaces> spaces;
+	std::map<int, Spaces> spaces;
 
 	auto filled = fillLetters(binary);
 
 
 	auto freqDistance = averageDistanceByRow(filled);
 
+	/**/
+	int m;
+	int a;
+	auto h = calculateProjectionHist(binary, &m,&a);
+	auto hh = calculateGraphicHist(h,a);
+	/**/
+
 	auto linesPosition = extractLinesPosition(calculateProjectionHist(binary));
+	auto chars = sortCharacters(binary.clone());
+
+	bool cap = false;
+	int s;
+	int e;
+	for (auto i : linesPosition)
+	{
+		uchar* row = filled.ptr<uchar>(i);
+		spaces[i] = std::vector<int>();
+
+		for (int j = 1; j < filled.cols; j++)
+		{
+			if (!cap && row[j] != 0 && row[j - 1] == 0)
+			{
+				cap = true;
+				s = j;
+			}
+			else if (cap && row[j] == 0)
+			{
+				cap = false;
+				e = j;
+				auto diff = e - s;
+				if (diff > freqDistance[i])
+				{
+					spaces[i].push_back(e);
+					line(binary, Point(s, i), Point(e, i), Scalar::all(127), 10);
+				}
+			}
+		}
+	}
 
 	return spaces;
 }
