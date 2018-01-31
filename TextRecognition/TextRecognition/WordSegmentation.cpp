@@ -10,15 +10,7 @@ std::map<int, Spaces> segmentWords(cv::Mat & binary)
 
 	auto filled = fillLetters(binary);
 
-
 	auto freqDistance = averageDistanceByRow(filled);
-
-	/**/
-	int m;
-	int a;
-	auto h = calculateProjectionHist(binary, &m,&a);
-	auto hh = calculateGraphicHist(h,a);
-	/**/
 
 	auto linesPosition = extractLinesPosition(calculateProjectionHist(binary));
 	auto chars = sortCharacters(binary.clone());
@@ -45,8 +37,7 @@ std::map<int, Spaces> segmentWords(cv::Mat & binary)
 				auto diff = e - s;
 				if (diff > freqDistance[i])
 				{
-					spaces[i].push_back(e);
-					line(binary, Point(s, i), Point(e, i), Scalar::all(127), 10);
+					spaces[i].push_back((s+e)/2);
 				}
 			}
 		}
