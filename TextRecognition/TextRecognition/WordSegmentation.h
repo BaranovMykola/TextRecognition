@@ -2,6 +2,7 @@
 #include <opencv2\core.hpp>
 
 #include <vector>
+#include <numeric>
 
 #include "LineSegmentation.h"
 #include "BinaryProcessing.h"

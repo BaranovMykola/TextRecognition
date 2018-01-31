@@ -189,13 +189,13 @@ void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDe
 	}
 }
 
-void threshold(std::vector<int>& freq, int t, int max)
-{
-	for (auto& i : freq)
-	{
-		i = i >= t ? max : i;
-	}
-}
+//void threshold(std::vector<int>& freq, int t, int max)
+//{
+//	for (auto& i : freq)
+//	{
+//		i = i >= t ? max : i;
+//	}
+//}
 
 std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary)
 {

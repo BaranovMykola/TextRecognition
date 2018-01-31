@@ -7,7 +7,9 @@ std::vector<int, Spaces> segmentWords(cv::Mat & binary)
 	auto filled = fillLetters(binary);
 
 
-	auto freq = averageDistanceByRow(filled);
+	auto freqDistance = averageDistanceByRow(filled);
+
+	auto linesPosition = extractLinesPosition(calculateProjectionHist(binary));
 
 	return spaces;
 }

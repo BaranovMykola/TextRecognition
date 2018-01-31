@@ -4,6 +4,7 @@
 #include <map>
 
 #include "RectComparator.h"
+#include "BinaryProcessing.h"
 
 std::vector<int> calculateProjectionHist(cv::Mat& binary, int* min = 0, int* max = 0);
 
@@ -21,6 +22,6 @@ int countLines(std::vector<bool> lines);
 
 void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev);
 
-void threshold(std::vector<int>& freq, int t, int max);
+//void threshold(std::vector<int>& freq, int t, int max);
 
 std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat& binary);
