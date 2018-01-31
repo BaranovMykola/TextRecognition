@@ -16,6 +16,8 @@
     <ClCompile Include="LineSegmentation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WordSegmentation.cpp" />
+    <ClCompile Include="BinaryProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -33,6 +35,8 @@
     <ClInclude Include="RectComparator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WordSegmentation.h" />
+    <ClInclude Include="BinaryProcessing.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

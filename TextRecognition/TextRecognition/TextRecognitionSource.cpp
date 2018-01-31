@@ -9,6 +9,7 @@
 #include "LetterDetection.h"
 #include "TrainANN.h"
 #include "LineSegmentation.h"
+#include "WordSegmentation.h"
 
 void loadImg(cv::Mat& img, const std::string& fileName)
 {
@@ -120,6 +121,25 @@ int main(int argc, char* cargv[])
 		img = closeCharacters(img);
 
 		encloseLetters(img);
+	}
+	else if (action == "word")
+	{
+		std::cout << ">> ";
+		std::cin >> action;
+		cv::Mat img;
+		loadImg(img, action);
+
+
+
+		img = letterHighligh(img);
+
+		img = rotate(img, findSkew(img));
+
+		img = closeCharacters(img);
+
+		//encloseLetters(img);
+
+		segmentWords(img);
 	}
 
 	currentTime = time(0);
