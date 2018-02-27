@@ -11,6 +11,7 @@
 #include "LineSegmentation.h"
 #include "WordSegmentation.h"
 #include "FileLoading.h" 
+#include "Skrew.h"
 
 int main(int argc, char* cargv[])
 {
@@ -132,6 +133,10 @@ int main(int argc, char* cargv[])
 		//encloseLetters(img);
 
 		segmentWords(img);
+	}
+	else if (action == "_skrew")
+	{
+		demo::SkrewRelease(); // 1,2,3,4,6,7
 	}
 
 	currentTime = time(0);

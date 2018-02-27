@@ -175,7 +175,7 @@ void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDe
 	cv::Mat thresh = rotate(resizedImage, newAngle);
 	auto freq = calculateProjectionHist(thresh, &min, &max);
 
-	auto lines = segmentLines(freq, min, max);
+	auto lines = segmentLines(freq, min, max);//
 
 	int aver = std::accumulate(freq.begin(), freq.end(), 0);
 	aver /= freq.size();
