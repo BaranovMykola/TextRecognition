@@ -155,9 +155,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinaryProcessing.cpp" />
+    <ClCompile Include="FileLoading.cpp" />
     <ClCompile Include="LetterDetection.cpp" />
     <ClCompile Include="LineSegmentation.cpp" />
     <ClCompile Include="RectComparator.cpp" />
+    <ClCompile Include="Skrew.cpp" />
     <ClCompile Include="TextRecognitionSource.cpp" />
     <ClCompile Include="TrainANN.cpp" />
     <ClCompile Include="WordSegmentation.cpp" />
@@ -165,9 +167,11 @@
   <ItemGroup>
     <ClInclude Include="BinaryProcessing.h" />
     <ClInclude Include="Contants.h" />
+    <ClInclude Include="FileLoading.h" />
     <ClInclude Include="LetterDetection.h" />
     <ClInclude Include="LineSegmentation.h" />
     <ClInclude Include="RectComparator.h" />
+    <ClInclude Include="Skrew.h" />
     <ClInclude Include="TrainANN.h" />
     <ClInclude Include="WordSegmentation.h" />
   </ItemGroup>

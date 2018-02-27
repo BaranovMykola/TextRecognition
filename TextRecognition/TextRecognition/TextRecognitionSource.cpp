@@ -10,15 +10,7 @@
 #include "TrainANN.h"
 #include "LineSegmentation.h"
 #include "WordSegmentation.h"
-
-void loadImg(cv::Mat& img, const std::string& fileName)
-{
-	img = cv::imread(TestSamplePathPrefix+fileName+".jpg");
-	if (img.empty())
-	{
-		throw std::exception("Invalid name");
-	}
-}
+#include "FileLoading.h" 
 
 int main(int argc, char* cargv[])
 {
