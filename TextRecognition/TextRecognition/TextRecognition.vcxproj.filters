@@ -18,8 +18,14 @@
     </ClCompile>
     <ClCompile Include="WordSegmentation.cpp" />
     <ClCompile Include="BinaryProcessing.cpp" />
-    <ClCompile Include="Skrew.cpp" />
     <ClCompile Include="FileLoading.cpp" />
+    <ClCompile Include="Skrew.cpp">
+      <Filter>DemoRelease</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>DemoRelease</Filter>
+    </ClCompile>
+    <ClCompile Include="ReleaseFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -39,8 +45,14 @@
     </ClInclude>
     <ClInclude Include="WordSegmentation.h" />
     <ClInclude Include="BinaryProcessing.h" />
-    <ClInclude Include="Skrew.h" />
     <ClInclude Include="FileLoading.h" />
+    <ClInclude Include="Skrew.h">
+      <Filter>DemoRelease</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>DemoRelease</Filter>
+    </ClInclude>
+    <ClInclude Include="ReleaseFunction.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

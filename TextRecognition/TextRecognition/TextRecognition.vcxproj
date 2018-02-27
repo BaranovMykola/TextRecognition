@@ -157,8 +157,10 @@
     <ClCompile Include="BinaryProcessing.cpp" />
     <ClCompile Include="FileLoading.cpp" />
     <ClCompile Include="LetterDetection.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="LineSegmentation.cpp" />
     <ClCompile Include="RectComparator.cpp" />
+    <ClCompile Include="ReleaseFunction.cpp" />
     <ClCompile Include="Skrew.cpp" />
     <ClCompile Include="TextRecognitionSource.cpp" />
     <ClCompile Include="TrainANN.cpp" />
@@ -169,8 +171,10 @@
     <ClInclude Include="Contants.h" />
     <ClInclude Include="FileLoading.h" />
     <ClInclude Include="LetterDetection.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="LineSegmentation.h" />
     <ClInclude Include="RectComparator.h" />
+    <ClInclude Include="ReleaseFunction.h" />
     <ClInclude Include="Skrew.h" />
     <ClInclude Include="TrainANN.h" />
     <ClInclude Include="WordSegmentation.h" />

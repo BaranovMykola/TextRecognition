@@ -12,6 +12,7 @@
 #include "WordSegmentation.h"
 #include "FileLoading.h" 
 #include "Skrew.h"
+#include "Line.h"
 
 int main(int argc, char* cargv[])
 {
@@ -137,6 +138,10 @@ int main(int argc, char* cargv[])
 	else if (action == "_skrew")
 	{
 		demo::SkrewRelease(); // 1,2,3,4,6,7
+	}
+	else if (action == "_line")
+	{
+		demo::LineRelease(); // 1,2,3,4,6,7
 	}
 
 	currentTime = time(0);

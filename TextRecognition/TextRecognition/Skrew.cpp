@@ -11,6 +11,7 @@
 #include "LetterDetection.h"
 #include "LineSegmentation.h"
 #include "Contants.h"
+#include "ReleaseFunction.h"
 
 using namespace cv;
 
@@ -95,13 +96,6 @@ namespace demo
 		destroyAllWindows();
 
 		/**/
-	}
-
-	void makePreview(cv::Mat& src, cv::Mat& dst)
-	{
-		float sizeModifier = std::min({ src.cols / SkrewRestoringImageSize, src.rows / SkrewRestoringImageSize });
-		sizeModifier = sizeModifier >= 1 ? sizeModifier : 1;
-		cv::resize(src, dst, Size(src.cols / sizeModifier, src.rows / sizeModifier), 0, 0, INTER_NEAREST);
 	}
 
 	void tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev)
