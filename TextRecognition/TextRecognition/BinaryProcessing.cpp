@@ -1,5 +1,9 @@
 #include "BinaryProcessing.h"
+
+#include <numeric>
+
 #include "LineSegmentation.h"
+#include "LetterDetection.h"
 
 cv::Mat fillLetters(cv::Mat & binary)
 {
