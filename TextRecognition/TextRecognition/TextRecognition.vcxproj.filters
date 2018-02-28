@@ -26,6 +26,7 @@
       <Filter>DemoRelease</Filter>
     </ClCompile>
     <ClCompile Include="ReleaseFunction.cpp" />
+    <ClCompile Include="Space.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -53,6 +54,7 @@
       <Filter>DemoRelease</Filter>
     </ClInclude>
     <ClInclude Include="ReleaseFunction.h" />
+    <ClInclude Include="Space.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

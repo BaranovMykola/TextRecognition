@@ -162,6 +162,7 @@
     <ClCompile Include="RectComparator.cpp" />
     <ClCompile Include="ReleaseFunction.cpp" />
     <ClCompile Include="Skrew.cpp" />
+    <ClCompile Include="Space.cpp" />
     <ClCompile Include="TextRecognitionSource.cpp" />
     <ClCompile Include="TrainANN.cpp" />
     <ClCompile Include="WordSegmentation.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="RectComparator.h" />
     <ClInclude Include="ReleaseFunction.h" />
     <ClInclude Include="Skrew.h" />
+    <ClInclude Include="Space.h" />
     <ClInclude Include="TrainANN.h" />
     <ClInclude Include="WordSegmentation.h" />
   </ItemGroup>
