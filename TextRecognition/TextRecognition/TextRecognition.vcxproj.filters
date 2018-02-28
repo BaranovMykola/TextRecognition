@@ -16,17 +16,27 @@
     <ClCompile Include="LineSegmentation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WordSegmentation.cpp" />
-    <ClCompile Include="BinaryProcessing.cpp" />
-    <ClCompile Include="FileLoading.cpp" />
     <ClCompile Include="Skrew.cpp">
       <Filter>DemoRelease</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
       <Filter>DemoRelease</Filter>
     </ClCompile>
-    <ClCompile Include="ReleaseFunction.cpp" />
-    <ClCompile Include="Space.cpp" />
+    <ClCompile Include="BinaryProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileLoading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReleaseFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Space.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSegmentation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -44,17 +54,27 @@
     <ClInclude Include="RectComparator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WordSegmentation.h" />
-    <ClInclude Include="BinaryProcessing.h" />
-    <ClInclude Include="FileLoading.h" />
     <ClInclude Include="Skrew.h">
       <Filter>DemoRelease</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
       <Filter>DemoRelease</Filter>
     </ClInclude>
-    <ClInclude Include="ReleaseFunction.h" />
-    <ClInclude Include="Space.h" />
+    <ClInclude Include="BinaryProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileLoading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Space.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReleaseFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSegmentation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
