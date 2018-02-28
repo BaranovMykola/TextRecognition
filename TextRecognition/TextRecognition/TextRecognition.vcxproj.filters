@@ -28,14 +28,14 @@
     <ClCompile Include="FileLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ReleaseFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Space.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WordSegmentation.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReleaseFunction.cpp">
+      <Filter>DemoRelease</Filter>
+    </ClCompile>
+    <ClCompile Include="Space.cpp">
+      <Filter>DemoRelease</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,14 +66,14 @@
     <ClInclude Include="FileLoading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Space.h">
+    <ClInclude Include="WordSegmentation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReleaseFunction.h">
-      <Filter>Header Files</Filter>
+      <Filter>DemoRelease</Filter>
     </ClInclude>
-    <ClInclude Include="WordSegmentation.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Space.h">
+      <Filter>DemoRelease</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
