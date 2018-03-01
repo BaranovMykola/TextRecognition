@@ -12,6 +12,7 @@
 #include "LineSegmentation.h"
 #include "Contants.h"
 #include "ReleaseFunction.h"
+#include <numeric>
 
 using namespace cv;
 

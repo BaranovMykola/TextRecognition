@@ -67,3 +67,19 @@ void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDe
  * \return Return pairs letter-line
  */
 std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat& binary);
+
+
+/**
+ * \brief Detects lines positions
+ * \param binary Binary image of text
+ * \return Return vector of exact lines positions
+ */
+std::vector<int> detectLines(cv::Mat& binary);
+
+/**
+ * \brief Converts lines ranges to exat line position
+ * \param threshFreq Thresholded horizontal projection histogram
+ * \param max Value to find ranges
+ * \return Return vector of average position of each group
+ */
+std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max);

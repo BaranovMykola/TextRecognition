@@ -257,4 +257,45 @@ std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary)
 	return rows;
 }
 
+std::vector<int> detectLines(cv::Mat& binary)
+{
+	int min;
+	int max;
+	auto freq = calculateProjectionHist(binary, &min, &max);
+
+	freq = thresholdLines(freq);
+
+	auto h = calculateGraphicHist(freq, max);
+
+	auto lines = convertFreqToLines(freq, max);
+
+	for (auto line : lines)
+	{
+		cv::line(binary, Point(0, line), Point(binary.cols, line), Scalar::all(127), 3);
+	}
+
+	return lines;
+}
+
+std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max)
+{
+	auto lowerBound = threshFreq.begin();
+	std::vector<int> lineList;
+	while(lowerBound != threshFreq.end())
+	{
+		auto lBound = std::find(lowerBound, threshFreq.end(), max);
+		auto uBound = std::find_if(lBound, threshFreq.end(), [&](auto i) {return i != max; });
+		if(lBound == uBound)
+		{
+			break;
+		}
+		int startGroup = std::distance(threshFreq.begin(), lBound);
+		int endGroup = startGroup + std::distance(lBound, uBound)-1;
+		int line = (startGroup + endGroup) / 2;
+		lineList.push_back(line);
+		lowerBound = uBound;
+	}
+	return lineList;
+}
+
 

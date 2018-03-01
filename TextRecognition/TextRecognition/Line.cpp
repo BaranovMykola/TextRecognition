@@ -8,6 +8,8 @@
 #include "LineSegmentation.h"
 #include "FileLoading.h"
 #include "ReleaseFunction.h"
+#include "LetterDetection.h"
+#include <numeric>
 
 void demo::LineRelease()
 {

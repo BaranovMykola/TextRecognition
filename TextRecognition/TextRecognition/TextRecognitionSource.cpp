@@ -94,7 +94,7 @@ int main(int argc, char* cargv[])
 
 			auto binary = rotate(thresh, skew);
 
-			auto res = sortCharacters(binary);
+			detectLines(binary);
 
 
 		}

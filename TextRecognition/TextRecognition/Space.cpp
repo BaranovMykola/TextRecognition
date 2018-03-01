@@ -8,6 +8,7 @@
 #include "LineSegmentation.h"
 #include "WordSegmentation.h"
 #include <opencv2/imgproc.hpp>
+#include "LetterDetection.h"
 
 void demo::spaceRelease()
 {
