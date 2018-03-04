@@ -25,17 +25,6 @@ std::vector<int> calculateProjectionHist(cv::Mat& binary, int* min = 0, int* max
 cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins = 300);
 
 /**
- * \brief Detects line based on vertical projection histogram. See calculateProjectionHist(cv::Mat&)
- * \param freq Vertical projection histogram. See calculateProjectionHist(cv::Mat&)
- * \param min Minimum histogram value
- * \param max Maximum histogram value
- * \return Returns vector contains information about line for each row. True - line, False - no line
- */
-std::vector<bool> segmentLines(std::vector<int> freq, int min, int max);
-
-void visualizeLines(cv::Mat& img, std::vector<bool> lines, int width);
-
-/**
  * \brief Rotate image with croping size
  * \param source Image to rotate
  * \param angle Angle to rotate at
@@ -50,8 +39,6 @@ cv::Mat rotate(cv::Mat& source, int angle);
  */
 int findSkew(cv::Mat binary);
 
-int countLines(std::vector<bool> lines);
-
 /**
  * \brief Try newAngle of skew. Rewrite angle and maxDev variables if newAngle is better
  * \param angle Rough skew angle
@@ -59,15 +46,7 @@ int countLines(std::vector<bool> lines);
  * \param resizedImage Binary images. Low resolution desirable
  * \param maxDev Rough maximal deviation
  */
-void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev);
-
-/**
- * \brief Distributes letters between lines
- * \param binary Binary image
- * \return Return pairs letter-line
- */
-std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat& binary);
-
+void tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev);
 
 /**
  * \brief Detects lines positions

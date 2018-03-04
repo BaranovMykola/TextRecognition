@@ -55,43 +55,6 @@ cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
 	return hist;
 }
 
-std::vector<bool> segmentLines(std::vector<int> freq, int min, int max)
-{
-	std::vector<bool> lines;
-	for (auto i : freq)
-	{
-		if (abs(i - max) > abs(i - min))
-		{
-			//line
-			lines.push_back(true);
-		}
-		else
-		{
-			//space
-			lines.push_back(false);
-		}
-	}
-	return lines;
-}
-
-void visualizeLines(cv::Mat & img, std::vector<bool> lines, int width)
-{
-	for (int i = 0; i < img.rows && i < lines.size(); i++)
-	{
-		Scalar color;
-		if (lines[i])
-		{
-			color = Scalar::all(0);
-		}
-		else
-		{
-			color = Scalar::all(255);
-		}
-
-		line(img, Point(0, i), Point(width, i), color);
-	}
-}
-
 cv::Mat rotate(cv::Mat& source, int angle)
 {
 	auto center = Point2f(source.cols / 2, source.rows / 2);
@@ -144,39 +107,24 @@ int findSkew(cv::Mat binary)
 
 	for (int i = -90; i <= 90; i+=5)
 	{
-		_tryAngle(angle, i, resizedImage, maxDev);
+		tryAngle(angle, i, resizedImage, maxDev);
 	}
 
 	for (int i = angle-4; i <= angle+4 && i != 0; i++)
 	{
-		_tryAngle(angle, i, resizedImage, maxDev);
+		tryAngle(angle, i, resizedImage, maxDev);
 	}
 
 	binary = rotate(binary, angle);
 	return angle;
 }
 
-int countLines(std::vector<bool> lines)
-{
-	int count = 0;
-	for (int i = 0; i < lines.size() - 1; i++)
-	{
-		if (lines[i] != lines[i + 1])
-		{
-			++count;
-		}
-	}
-	return count;
-}
-
-void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev)
+void tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev)
 {
 	int min;
 	int max;
 	cv::Mat thresh = rotate(resizedImage, newAngle);
 	auto freq = calculateProjectionHist(thresh, &min, &max);
-
-	auto lines = segmentLines(freq, min, max);//
 
 	int aver = std::accumulate(freq.begin(), freq.end(), 0);
 	aver /= freq.size();
@@ -188,74 +136,6 @@ void _tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDe
 		maxDev = dev;
 		angle = newAngle;
 	}
-}
-
-//void threshold(std::vector<int>& freq, int t, int max)
-//{
-//	for (auto& i : freq)
-//	{
-//		i = i >= t ? max : i;
-//	}
-//}
-
-std::map<cv::Rect, int, RectComparator> sortCharacters(cv::Mat & binary)
-{
-	int min;
-	int max;
-
-	std::map<Rect, int, RectComparator> rows;
-
-	auto copy = binary.clone();
-	auto rectangles = encloseLetters(binary);
-
-	for (auto i : rectangles)
-	{
-		copy(i) = Scalar::all(0);
-	}
-
-	std::vector<int> freq = calculateProjectionHist(copy, &min, &max);
-	double average = std::accumulate(freq.begin(), freq.end(), 0) / (double)freq.size();
-	double thresholdLevel = (average + min) / 2;
-	threshold(freq, thresholdLevel, max);
-
-	auto h = calculateGraphicHist(freq, max);
-
-	int s;
-	int e;
-	bool cap = false;
-	int line = 0;
-	for (int i = 0; i < freq.size(); i++)
-	{
-		if (freq[i] == max && !cap)
-		{
-			s = i;
-			cap = true;
-		}
-		if (freq[i] != max && cap)
-		{
-			cap = false;
-			e = i;
-
-			for (auto j : rectangles)
-			{
-				if (j.y <= s && j.y + j.height >= s
-					||
-					j.y <= e && j.y + j.height >= e
-					||
-					j.y >= s && j.y + j.height <= e
-					||
-					j.y < s && j.y + j.height > e)
-				{
-					binary(j) = 100;
-					rows[j] = line;
-				}
-			}
-			++line;
-
-		}
-	}
-
-	return rows;
 }
 
 std::vector<int> detectLines(cv::Mat& binary)

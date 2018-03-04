@@ -125,18 +125,6 @@ int main(int argc, char* cargv[])
 		std::cin >> action;
 		cv::Mat img;
 		loadImg(img, action);
-
-
-
-		img = letterHighligh(img);
-
-		img = rotate(img, findSkew(img));
-
-		img = closeCharacters(img);
-
-		//encloseLetters(img);
-
-		segmentWords(img);
 	}
 	else if (action == "_skrew")
 	{

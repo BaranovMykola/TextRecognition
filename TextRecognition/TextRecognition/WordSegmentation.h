@@ -9,8 +9,6 @@
 
 typedef std::vector<int> Spaces;
 
-std::map<int, Spaces> segmentWords(cv::Mat& binary);
-
 /* @brief
 
 Returns vector of average distance between black pixels of each lines

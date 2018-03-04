@@ -42,20 +42,4 @@ void demo::spaceRelease()
 	cv::imshow("Binary", preview);
 	cv::waitKey();
 	cv::destroyAllWindows();
-
-	auto spaces = segmentWords(binary);
-
-	for (auto space : spaces)
-	{
-		int line = space.first;
-		for (auto pos : space.second)
-		{
-			cv::circle(binary, cv::Point(pos, line), 30, cv::Scalar::all(127), -1);
-		}
-	}
-
-	makePreview(binary, preview);
-	cv::imshow("Spaces", preview);
-	cv::waitKey();
-	cv::destroyAllWindows();
 }

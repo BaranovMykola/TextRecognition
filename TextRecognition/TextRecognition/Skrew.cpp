@@ -107,8 +107,6 @@ namespace demo
 		auto freq = calculateProjectionHist(thresh, &min, &max);
 
 
-		auto lines = segmentLines(freq, min, max);//
-
 		int aver = std::accumulate(freq.begin(), freq.end(), 0);
 		aver /= freq.size();
 
