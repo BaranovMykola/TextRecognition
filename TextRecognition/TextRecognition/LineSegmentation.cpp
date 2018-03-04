@@ -6,6 +6,7 @@
 
 #include "Contants.h"
 #include "LetterDetection.h"
+#include <list>
 
 using namespace cv;
 
@@ -296,6 +297,68 @@ std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max)
 		lowerBound = uBound;
 	}
 	return lineList;
+}
+
+std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
+{
+	std::vector<int> clearedLines;
+
+	std::vector<std::vector < int >> merging(lines.size());
+
+
+	auto draw = binary.clone();
+	for (auto line : lines)
+	{
+		cv::line(draw, Point(0, line), Point(binary.cols, line), Scalar::all(127), 3);
+	}
+
+	int sum = 0;
+	for (int i = 1; i < lines.size(); ++i)
+	{
+		sum += (lines[i] - lines[i - 1]);
+	}
+
+	sum /= lines.size();
+
+	int l =0;
+	for (int i = 0; i < lines.size()-1; ++i)
+	{
+		if(std::abs(lines[i+1] - lines[i]) < sum/2)
+		{
+			merging[l].push_back(lines[i]);
+			merging[l].push_back(lines[i+1]);
+		}
+		else
+		{
+			merging[l].push_back(lines[i]);
+			++l;
+			merging[l].push_back(lines[i+1]);
+		}
+	}
+
+	//
+
+	auto itRem = std::remove_if(merging.begin(), merging.end(), [](auto vec) {return vec.empty(); });
+
+	merging.erase(itRem, merging.end());
+
+	for (auto & lineSet : merging)
+	{
+		std::sort(lineSet.begin(), lineSet.end());
+		auto uniqIt = std::unique(lineSet.begin(), lineSet.end());
+		lineSet.erase(uniqIt, lineSet.end());
+
+		int aver = std::accumulate(lineSet.begin(), lineSet.end(), 0)/lineSet.size();
+
+		clearedLines.push_back(aver);
+	}
+
+	for (auto line : clearedLines)
+	{
+		cv::line(binary, Point(0, line), Point(binary.cols, line), Scalar::all(127), 3);
+	}
+
+	return clearedLines;
 }
 
 

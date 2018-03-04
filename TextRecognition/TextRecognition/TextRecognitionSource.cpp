@@ -94,7 +94,9 @@ int main(int argc, char* cargv[])
 
 			auto binary = rotate(thresh, skew);
 
-			detectLines(binary);
+			auto lines = detectLines(binary.clone());
+
+			clearMultipleLines(lines, binary);
 
 
 		}

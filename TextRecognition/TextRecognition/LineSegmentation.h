@@ -83,3 +83,5 @@ std::vector<int> detectLines(cv::Mat& binary);
  * \return Return vector of average position of each group
  */
 std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max);
+
+std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary);
