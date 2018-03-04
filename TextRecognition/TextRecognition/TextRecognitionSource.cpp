@@ -102,9 +102,9 @@ int main(int argc, char* cargv[])
 
 			auto lines = detectLines(binary.clone());
 
-			clearMultipleLines(lines, binary);
+			lines = clearMultipleLines(lines, binary);
 
-
+			segmentExactLine(lines[4], binary);
 		}
 		while (true);
 	}

@@ -87,3 +87,11 @@ std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max);
  * \return Returns lines without duplicates
  */
 std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary);
+
+/**
+ * \brief Finds all letters that intersects exact line
+ * \param line Line vertical position (Y)
+ * \param binary Binsry image of text
+ * \return Returns vector of letters position
+ */
+std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary);

@@ -26,6 +26,7 @@
 
 #include "Contants.h"
 #include "BinaryProcessing.h"
+#include "LetterDetection.h"
 
 using namespace cv;
 
@@ -234,6 +235,25 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 	}
 
 	return clearedLines;
+}
+
+std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
+{
+	std::vector<cv::Rect> letters;
+
+	auto allLetters = encloseLetters(binary);
+
+	for (auto ch : allLetters)
+	{
+		if (ch.y < line && ch.y+ch.height > line)
+		{
+			letters.push_back(ch);
+		}
+	}
+
+	std::sort(letters.begin(), letters.end(), [](auto l, auto r) {return l.x < r.x; });
+
+	return letters;
 }
 
 
