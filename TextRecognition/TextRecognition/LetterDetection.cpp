@@ -54,7 +54,8 @@ int averLetterHight(cv::Mat& bin)
 cv::Mat closeCharacters(cv::Mat& binary)
 {
 	Mat closed;
-	int closingSize = averLetterHight(binary.clone());
+	auto cloneBinary = binary.clone();
+	int closingSize = averLetterHight(cloneBinary);
 	auto kern = getStructuringElement(MORPH_ELLIPSE, Size(1, closingSize / 3 + 1));
 	morphologyEx(binary, closed, MORPH_OPEN, kern, Point(0, closingSize / 3));
 	return closed;

@@ -3,9 +3,6 @@
 #include <vector>
 #include <map>
 
-#include "RectComparator.h"
-#include "BinaryProcessing.h"
-
 /**
  * \brief Calculate vertical projection histogram - count of zero pixels in each row
  * \param binary Binary image

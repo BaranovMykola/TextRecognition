@@ -21,7 +21,7 @@ int _rowAverageDistance(uchar * row, size_t size)
 	int accumulate = 0;
 	int count = 0;
 	bool captured = false;
-	int start;
+	int start = 0;
 	int end;
 	
 	for (size_t i = 1; i < size; i++)

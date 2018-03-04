@@ -3,7 +3,6 @@
 #include <opencv2\highgui.hpp>
 #include <iostream>
 #include <numeric>
-#include <fstream>
 
 #include "Contants.h"
 
@@ -30,7 +29,6 @@ Ptr<TrainData> createTrainData()
 	Mat trainData(samplesCount, 784, CV_32FC1);
 	Mat labels(samplesCount, 33, CV_32FC1);
 	int r = 0;
-	int j = 0;
 	cout << "Loading train data..." << endl;
 	for (int digit = 0; digit < 33; digit++)
 	{
@@ -102,14 +100,12 @@ Ptr<cv::ml::ANN_MLP> loadANN(std::string file)
 {
 	cout << "Loading ANN..." << endl;
 	return ANN_MLP::load(file);
-	cout << "ANN loaded" << endl;
 }
 
 void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 {
 	int total = 0;
 	int correct = 0;
-	int j = 63;
 	std::vector<int> acc;
 	int classes = 33;
 	int allClasses = 33;
@@ -122,7 +118,6 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			std::string file = path + std::to_string(digit) + "/" + std::to_string(i) + ".jpg";
 			auto sample = imread(file, CV_LOAD_IMAGE_GRAYSCALE);
 			threshold(sample, sample, 100, 255, THRESH_BINARY_INV | THRESH_OTSU);
-			bool empty = sample.empty();
 			if (sample.empty())
 			{
 				//cout << "File " << file << " not found" << endl;
@@ -130,8 +125,9 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			}
 			auto vec = convertMatToVec(sample);
 			Mat res;
+			
+			// ReSharper disable once CppExpressionWithoutSideEffects
 			mlp->predict(vec, res);
-			//svm->predict(vec, res);
 			float* row = res.ptr<float>(0);
 			auto max = std::max_element(row, row + allClasses);
 			int d = std::distance(row, max);

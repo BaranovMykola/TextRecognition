@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <numeric>
 #include <opencv2\imgproc.hpp>
-#include <iostream>
+
+#include <list>
 
 #include "Contants.h"
-#include "LetterDetection.h"
-#include <list>
+#include "BinaryProcessing.h"
 
 using namespace cv;
 
@@ -48,7 +48,7 @@ std::vector<int> calculateProjectionHist(cv::Mat & binary, int * min, int * max)
 cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
 {
 	Mat hist = Mat::zeros(Size(bins, freq.size()), CV_8UC1);
-	for (int i = 0; i < freq.size(); i++)
+	for (unsigned int i = 0; i < freq.size(); i++)
 	{
 		line(hist, Point(0, i), Point(bins*freq[i] / maxFreq,i), Scalar::all(254));
 	}
@@ -57,7 +57,7 @@ cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
 
 cv::Mat rotate(cv::Mat& source, int angle)
 {
-	auto center = Point2f(source.cols / 2, source.rows / 2);
+	auto center = Point2f(static_cast<int>(source.cols / 2), static_cast<int>(source.rows / 2));
 	cv::Mat rotateMat = getRotationMatrix2D(center, angle, 1);
 	auto rotRect = RotatedRect(center, source.size(), angle).boundingRect();
 	rotateMat.at<double>(0, 2) += rotRect.width / 2.0 - center.x;
@@ -73,7 +73,7 @@ int findDev(std::vector<bool> lines)
 	int max = 0;
 	int min = lines.size();
 	int dev = 0;
-	for (int i = 0; i < lines.size()-1; i++)
+	for (unsigned int i = 0; i < lines.size()-1; i++)
 	{
 		if (lines[i] == lines[i + 1])
 		{
@@ -98,8 +98,6 @@ int findSkew(cv::Mat binary)
 {
 	long long maxDev = 0;
 	int angle = 0;
-	int min;
-	int max;
 	float sizeModifier = std::min({ binary.cols / SkrewRestoringImageSize, binary.rows / SkrewRestoringImageSize });
 	sizeModifier = sizeModifier >= 1 ? sizeModifier : 1;
 	Mat resizedImage;
@@ -180,14 +178,14 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 	std::vector<std::vector < int >> merging(lines.size());
 
 	int sum = 0;
-	for (int i = 1; i < lines.size(); ++i)
+	for (unsigned int i = 1; i < lines.size(); ++i)
 	{
 		sum += (lines[i] - lines[i - 1]);
 	}
 	sum /= lines.size();
 
 	int l =0;
-	for (int i = 0; i < lines.size()-1; ++i)
+	for (unsigned int i = 0; i < lines.size()-1; ++i)
 	{
 		if(std::abs(lines[i+1] - lines[i]) < sum/2)
 		{

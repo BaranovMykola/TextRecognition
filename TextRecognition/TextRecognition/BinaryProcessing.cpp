@@ -25,9 +25,9 @@ std::vector<int> extractLinesPosition(std::vector<int> freq)
 	int max = *std::max_element(freq.begin(), freq.end());
 
 	bool captured = false;
-	int strart;
+	int strart = 0;
 	int end;
-	for (int i = 1; i < freq.size(); i++)
+	for (unsigned int i = 1; i < freq.size(); i++)
 	{
 		if (!captured && freq[i] == max && freq[i - 1] != max)
 		{
