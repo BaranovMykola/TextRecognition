@@ -56,10 +56,10 @@ std::vector<cv::Rect> encloseLetters(cv::Mat& thresholded)
 		if (rect.area() > 100)
 		{
 			rects.push_back(rect);
-			rectangle(thresholded, rect, Scalar(0, 0, 255), 1);
+			//rectangle(thresholded, rect, Scalar(0, 0, 255), 1);
 		}
 	}
-	drawContours(thresholded, contours, -1, Scalar(0, 255, 0), 1);
+	//drawContours(thresholded, contours, -1, Scalar(0, 255, 0), 1);
 	return rects;
 }
 

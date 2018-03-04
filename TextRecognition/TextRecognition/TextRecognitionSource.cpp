@@ -14,6 +14,7 @@
 #include "Skrew.h"
 #include "Line.h"
 #include "Space.h"
+#include <opencv2/imgproc.hpp>
 
 int main(int argc, char* cargv[])
 {
@@ -100,11 +101,13 @@ int main(int argc, char* cargv[])
 
 			auto binary = rotate(thresh, skew);
 
+			cv::threshold(binary, binary, 127, 255, CV_THRESH_BINARY);
+
 			auto lines = detectLines(binary.clone());
 
 			lines = clearMultipleLines(lines, binary);
 
-			segmentExactLine(lines[4], binary);
+			segmentExactLine(lines[10], binary);
 		}
 		while (true);
 	}
@@ -114,8 +117,6 @@ int main(int argc, char* cargv[])
 		std::cin >> action;
 		cv::Mat img;
 		loadImg(img, action);
-
-
 
 		img = letterHighligh(img);
 

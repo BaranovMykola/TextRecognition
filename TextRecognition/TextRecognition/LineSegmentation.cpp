@@ -241,6 +241,13 @@ std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
 {
 	std::vector<cv::Rect> letters;
 
+	auto clone = binary.clone();
+	int shift = averLetterHight(binary)/3-5+4;
+	binary = closeCharacters(binary);
+
+	cv::Mat out = cv::Mat::zeros(binary.size(), binary.type());
+	clone(cv::Rect(0, shift, binary.cols, binary.rows - shift)).copyTo(out(cv::Rect(0, 0, binary.cols, binary.rows - shift)));
+
 	auto allLetters = encloseLetters(binary);
 
 	for (auto ch : allLetters)
@@ -249,6 +256,15 @@ std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
 		{
 			letters.push_back(ch);
 		}
+	}
+
+	Mat draw(binary.size(), binary.type());
+	draw = Scalar::all(255);
+
+	for (auto ch : letters)
+	{
+		ch.y -= shift;
+		clone(ch).copyTo(draw(ch));
 	}
 
 	std::sort(letters.begin(), letters.end(), [](auto l, auto r) {return l.x < r.x; });
