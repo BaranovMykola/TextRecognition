@@ -84,4 +84,12 @@ std::vector<int> detectLines(cv::Mat& binary);
  */
 std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max);
 
+/**
+ * \brief Clears lines duplicates. Used average distance between lines.
+ * If distance less than half of average distance, lines replaces by lines of their
+ * average position
+ * \param lines Vector of lines position
+ * \param binary Binary image of text
+ * \return Returns lines without duplicates
+ */
 std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary);
