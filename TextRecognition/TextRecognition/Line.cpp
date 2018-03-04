@@ -10,6 +10,7 @@
 #include "ReleaseFunction.h"
 #include "LetterDetection.h"
 #include <numeric>
+#include <opencv2/imgproc.hpp>
 
 void demo::LineRelease()
 {
@@ -54,29 +55,31 @@ void demo::LineRelease()
 	cv::destroyAllWindows();
 
 	auto copy = binary.clone();
-	int min;
-	int max;
-	std::vector<int> freq = calculateProjectionHist(copy, &min, &max);
-	double average = std::accumulate(freq.begin(), freq.end(), 0) / (double)freq.size();
-	double thresholdLevel = (average + min) / 2;
-	threshold(freq, thresholdLevel, max);
+	
+	auto lines = detectLines(binary);
 
-	auto h = calculateGraphicHist(freq, max);
-
-	for (int i = 0; i < freq.size(); i++)
-	{
-		if (freq[i] != max)
-			continue;
-		uchar* row = copy.ptr<uchar>(i);
-		for (int j = 0; j < copy.cols; j++)
-		{
-			if (row[j] > 0)
-				row[j] -= 127;
-		}
-	}
+	drawLines(lines, copy);
 
 	makePreview(copy, preview);
 	cv::imshow("Lines", preview);
 	cv::waitKey();
  	cv::destroyAllWindows();
+
+	lines = clearMultipleLines(lines, binary);
+
+	drawLines(lines, binary);
+
+	makePreview(binary, preview);
+	cv::imshow("Lines", preview);
+	cv::waitKey();
+	cv::destroyAllWindows();
 }
+
+void demo::drawLines(std::vector<int> lines, cv::Mat& img)
+{
+	for (auto line : lines)
+	{
+		cv::line(img, cv::Point(0, line), cv::Point(img.cols, line), cv::Scalar::all(127), 3);
+	}
+}
+

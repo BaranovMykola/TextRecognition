@@ -270,11 +270,6 @@ std::vector<int> detectLines(cv::Mat& binary)
 
 	auto lines = convertFreqToLines(freq, max);
 
-	for (auto line : lines)
-	{
-		cv::line(binary, Point(0, line), Point(binary.cols, line), Scalar::all(127), 3);
-	}
-
 	return lines;
 }
 
