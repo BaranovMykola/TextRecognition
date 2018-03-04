@@ -108,9 +108,12 @@ namespace demo
 
 
 		int aver = std::accumulate(freq.begin(), freq.end(), 0);
-		aver /= freq.size();
+		aver /= static_cast<int>(freq.size());
 
-		double dev = accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem) { return acc + pow((aver - elem), 2); });
+		long long dev = static_cast<long long>(accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem)
+		{
+			return acc + pow((aver - elem), 2);
+		}));
 
 		auto hist = calculateGraphicHist(freq, max);
 		imshow("Current Hist", hist);

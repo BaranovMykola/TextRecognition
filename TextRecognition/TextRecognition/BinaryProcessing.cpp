@@ -68,7 +68,7 @@ std::vector<int> thresholdLines(std::vector<int> freq)
 	double average = std::accumulate(freq.begin(), freq.end(), 0) / (double)freq.size();
 	auto minmax = std::minmax_element(freq.begin(), freq.end());
 	double thresholdLevel = (average + *minmax.first) / 2;
-	threshold(freq, thresholdLevel, *minmax.second);
+	threshold(freq, static_cast<int>(thresholdLevel), *minmax.second);
 
 	return freq;
 }

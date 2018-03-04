@@ -42,7 +42,7 @@ int _rowAverageDistance(uchar * row, size_t size)
 	int start = 0;
 	int end;
 	
-	for (size_t i = 1; i < size; i++)
+	for (unsigned int i = 1; i < size; i++)
 	{
 		if (!captured && row[i] != 0 && row[i - 1] == 0)
 		{

@@ -65,7 +65,7 @@ Ptr<TrainData> createTrainData()
 
 			for (int k = 0; k < 33; k++)
 			{
-				labels.at<float>(r, k) = k == digit ? 1 : 0;
+				labels.at<float>(r, k) = k == digit ? float(1) : float(0);
 			}
 
 			++r;
@@ -148,7 +148,7 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			mlp->predict(vec, res);
 			float* row = res.ptr<float>(0);
 			auto max = std::max_element(row, row + allClasses);
-			int d = std::distance(row, max);
+			int d = static_cast<int>(std::distance(row, max));
 			if (d == digit)
 			{
 				++correct;
@@ -156,7 +156,7 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 			++total;
 		}
 		std::cout << "Total: " << total << "\tCorrect: " << correct << "\t(" << 100 * correct / (double)total << "%)" << endl;
-		acc.push_back(100 * correct / (double)total);
+		acc.push_back(static_cast<int>(100 * correct / static_cast<double>(total)));
 
 		total = 0;
 		correct = 0;

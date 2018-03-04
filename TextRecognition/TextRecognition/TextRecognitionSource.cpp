@@ -21,7 +21,13 @@ int main(int argc, char* cargv[])
 	std::string action;
 	std::cout << ">> ";
 	std::cin >> action;
-	std::cout << "Started programm at\t" << asctime(localtime(&currentTime)) << std::endl;
+
+	tm tms;
+	char timeStamp[100];
+	localtime_s(&tms, &currentTime);
+	asctime_s(timeStamp, sizeof timeStamp, &tms);
+
+	std::cout << "Started programm at\t" << timeStamp << std::endl;
 	if (action == "train")
 	{
 		trainANN("28x28_MLP_H0");
@@ -140,7 +146,9 @@ int main(int argc, char* cargv[])
 	}
 
 	currentTime = time(0);
-	std::cout << "Finished programm at\t" << asctime(localtime(&currentTime)) << std::endl;
+	localtime_s(&tms, &currentTime);
+	asctime_s(timeStamp, sizeof timeStamp, &tms);
+	std::cout << "Finished programm at\t" << timeStamp << std::endl;
 	std::cout << "Program stopped before exit... (Press any key to continue)" << std::endl;
 	char ch;
 	std::cin >> ch;

@@ -66,7 +66,8 @@ std::vector<cv::Rect> encloseLetters(cv::Mat& thresholded)
 int averLetterHight(cv::Mat& bin)
 {
 	auto letterRegions = encloseLetters(bin);
-	return std::accumulate(letterRegions.begin(), letterRegions.end(), 0.0, [](double acc, Rect r) { return r.height + acc; }) / letterRegions.size();
+	return static_cast<int>(std::accumulate(letterRegions.begin(), letterRegions.end(), 0.0,
+	                                        [](double acc, Rect r) { return r.height + acc; })) / static_cast<int>(letterRegions.size());
 }
 
 cv::Mat closeCharacters(cv::Mat& binary)

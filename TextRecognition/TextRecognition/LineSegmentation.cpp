@@ -37,10 +37,10 @@ std::vector<int> calculateProjectionHist(cv::Mat & binary, int * min, int * max)
 	for (int i = 0; i < binary.rows; i++)
 	{
 		uchar* row = binary.ptr<uchar>(i);
-		int nonZeroQuantity = std::count_if(row, row + binary.cols, [](uchar p)
+		int nonZeroQuantity = static_cast<int>(std::count_if(row, row + binary.cols, [](uchar p)
 		{
 			return p == 0;
-		});
+		}));
 		freq.push_back(nonZeroQuantity);
 		if (_min > nonZeroQuantity)
 		{
@@ -66,7 +66,7 @@ std::vector<int> calculateProjectionHist(cv::Mat & binary, int * min, int * max)
 
 cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
 {
-	Mat hist = Mat::zeros(Size(bins, freq.size()), CV_8UC1);
+	Mat hist = Mat::zeros(Size(bins, static_cast<int>(freq.size())), CV_8UC1);
 	for (unsigned int i = 0; i < freq.size(); i++)
 	{
 		line(hist, Point(0, i), Point(bins*freq[i] / maxFreq,i), Scalar::all(254));
@@ -76,9 +76,9 @@ cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
 
 cv::Mat rotate(cv::Mat& source, int angle)
 {
-	auto center = Point2f(static_cast<int>(source.cols / 2), static_cast<int>(source.rows / 2));
+	auto center = Point2f(source.cols / float(2), source.rows / float(2));
 	cv::Mat rotateMat = getRotationMatrix2D(center, angle, 1);
-	auto rotRect = RotatedRect(center, source.size(), angle).boundingRect();
+	auto rotRect = RotatedRect(center, source.size(), static_cast<float>(angle)).boundingRect();
 	rotateMat.at<double>(0, 2) += rotRect.width / 2.0 - center.x;
 	rotateMat.at<double>(1, 2) += rotRect.height / 2.0 - center.y;
 
@@ -90,7 +90,7 @@ cv::Mat rotate(cv::Mat& source, int angle)
 int findDev(std::vector<bool> lines)
 {
 	int max = 0;
-	int min = lines.size();
+	int min = static_cast<int>(lines.size());
 	int dev = 0;
 	for (unsigned int i = 0; i < lines.size()-1; i++)
 	{
@@ -120,7 +120,7 @@ int findSkew(cv::Mat binary)
 	float sizeModifier = std::min({ binary.cols / SkrewRestoringImageSize, binary.rows / SkrewRestoringImageSize });
 	sizeModifier = sizeModifier >= 1 ? sizeModifier : 1;
 	Mat resizedImage;
-	cv::resize(binary, resizedImage, Size(binary.cols/sizeModifier, binary.rows/sizeModifier),0,0,INTER_NEAREST);
+	cv::resize(binary, resizedImage, Size(static_cast<int>(binary.cols / sizeModifier), static_cast<int>(binary.rows / sizeModifier)),0,0,INTER_NEAREST);
 
 	for (int i = -90; i <= 90; i+=5)
 	{
@@ -144,9 +144,12 @@ void tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev
 	auto freq = calculateProjectionHist(thresh, &min, &max);
 
 	int aver = std::accumulate(freq.begin(), freq.end(), 0);
-	aver /= freq.size();
+	aver /= static_cast<int>(freq.size());
 
-	double dev = accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem) { return acc + pow((aver - elem), 2); });
+	long long dev = static_cast<long long>(accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem)
+	{
+		return acc + pow((aver - elem), 2);
+	}));
 
 	if (maxDev < dev)
 	{
@@ -182,8 +185,8 @@ std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max)
 		{
 			break;
 		}
-		int startGroup = std::distance(threshFreq.begin(), lBound);
-		int endGroup = startGroup + std::distance(lBound, uBound)-1;
+		int startGroup = static_cast<int>(std::distance(threshFreq.begin(), lBound));
+		int endGroup = startGroup + static_cast<int>(std::distance(lBound, uBound))-1;
 		int line = (startGroup + endGroup) / 2;
 		lineList.push_back(line);
 		lowerBound = uBound;
@@ -201,7 +204,7 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 	{
 		sum += (lines[i] - lines[i - 1]);
 	}
-	sum /= lines.size();
+	sum /= static_cast<int>(lines.size());
 
 	int l =0;
 	for (unsigned int i = 0; i < lines.size()-1; ++i)
@@ -226,7 +229,7 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 		auto uniqIt = std::unique(lineSet.begin(), lineSet.end());
 		lineSet.erase(uniqIt, lineSet.end());
 
-		int aver = std::accumulate(lineSet.begin(), lineSet.end(), 0)/lineSet.size();
+		int aver = std::accumulate(lineSet.begin(), lineSet.end(), 0)/static_cast<int>(lineSet.size());
 		clearedLines.push_back(aver);
 	}
 
