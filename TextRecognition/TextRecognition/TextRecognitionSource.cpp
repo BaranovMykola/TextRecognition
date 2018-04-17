@@ -134,7 +134,7 @@ int main(int argc, char* cargv[])
 		cv::Mat img;
 		loadImg(img, action);
 	}
-	else if (action == "_skrew")
+	else if (action == "_skew")
 	{
 		demo::SkrewRelease(); // 1,2,3,4,6,7
 	}

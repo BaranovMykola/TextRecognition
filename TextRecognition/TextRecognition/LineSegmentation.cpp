@@ -27,6 +27,7 @@
 #include "Contants.h"
 #include "BinaryProcessing.h"
 #include "LetterDetection.h"
+#include "VectorProcessing.h"
 
 using namespace cv;
 
@@ -169,7 +170,34 @@ std::vector<int> detectLines(cv::Mat& binary)
 
 	auto h = calculateGraphicHist(freq, max);
 
-	auto lines = convertFreqToLines(freq, max);
+#if _DEBUG
+	Mat b;
+	morphologyEx(binary, b, MORPH_ERODE, getStructuringElement(MORPH_RECT, Size(40, 1)));
+
+	freq = calculateProjectionHist(binary, &min, &max);
+	auto hist = calculateGraphicHist(freq, max);
+
+	int kernel = 20; // 2n+1
+	for (int i = kernel; i < freq.size() - kernel; ++i)
+	{
+		freq[i] = std::accumulate(freq.begin() + i - kernel, freq.begin() + i + kernel, 0) / (kernel * 2 + 1);
+	}
+
+	max = *std::max_element(freq.begin(), freq.end());
+	hist = calculateGraphicHist(freq, max);
+#endif
+
+	//auto lines = convertFreqToLines(freq, max);
+
+	auto lines = vec::findLocalMaxima(freq);
+
+#if _DEBUG
+	Mat draw = binary.clone();
+	for (auto line : lines)
+	{
+		cv::line(draw, Point(0, line), Point(binary.cols, line), Scalar(127), 5);
+	}
+#endif
 
 	return lines;
 }
@@ -243,6 +271,11 @@ std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
 	int shift = averLetterHight(binary)/3-5+4;
 	binary = closeCharacters(binary);
 	auto allLetters = encloseLetters(binary);
+
+	for (auto letter : allLetters)
+	{
+		binary(letter) = 0;
+	}
 
 	return _segmentExactLine(line, allLetters, shift);
 }

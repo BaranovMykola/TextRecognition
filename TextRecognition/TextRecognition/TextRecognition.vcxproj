@@ -166,6 +166,7 @@
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="TextRecognitionSource.cpp" />
     <ClCompile Include="TrainANN.cpp" />
+    <ClCompile Include="VectorProcessing.cpp" />
     <ClCompile Include="WordSegmentation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="Skrew.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="TrainANN.h" />
+    <ClInclude Include="VectorProcessing.h" />
     <ClInclude Include="WordSegmentation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

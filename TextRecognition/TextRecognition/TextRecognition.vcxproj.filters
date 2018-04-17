@@ -40,6 +40,7 @@
     <ClCompile Include="LineExtracting.cpp">
       <Filter>DemoRelease\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VectorProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -81,6 +82,7 @@
     <ClInclude Include="LineExtracting.h">
       <Filter>DemoRelease\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="VectorProcessing.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
