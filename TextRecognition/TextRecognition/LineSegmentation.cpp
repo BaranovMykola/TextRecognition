@@ -239,37 +239,29 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 
 std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
 {
-	std::vector<cv::Rect> letters;
-
 	auto clone = binary.clone();
 	int shift = averLetterHight(binary)/3-5+4;
 	binary = closeCharacters(binary);
-
-	cv::Mat out = cv::Mat::zeros(binary.size(), binary.type());
-	clone(cv::Rect(0, shift, binary.cols, binary.rows - shift)).copyTo(out(cv::Rect(0, 0, binary.cols, binary.rows - shift)));
-
 	auto allLetters = encloseLetters(binary);
+
+	return _segmentExactLine(line, allLetters, shift);
+}
+
+std::vector<cv::Rect> _segmentExactLine(int line, std::vector<cv::Rect> allLetters, int shift)
+{
+	std::vector<cv::Rect> letters;
 
 	for (auto ch : allLetters)
 	{
-		if (ch.y < line && ch.y+ch.height > line)
+		if (ch.y < line && ch.y + ch.height > line)
 		{
+			ch.y -= shift;
 			letters.push_back(ch);
 		}
-	}
-
-	Mat draw(binary.size(), binary.type());
-	draw = Scalar::all(255);
-
-	for (auto ch : letters)
-	{
-		ch.y -= shift;
-		clone(ch).copyTo(draw(ch));
 	}
 
 	std::sort(letters.begin(), letters.end(), [](auto l, auto r) {return l.x < r.x; });
 
 	return letters;
 }
-
 

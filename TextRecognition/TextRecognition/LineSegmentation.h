@@ -95,3 +95,12 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary);
  * \return Returns vector of letters position
  */
 std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary);
+
+/**
+ * \brief Extract letter that lies on exact line
+ * \param line Line number
+ * \param allLetters Boundg rectangles of all letters
+ * \param shift Vertical letters shift
+ * \return Return bounding rectangles of letter that lies on exact line
+ */
+std::vector<cv::Rect> _segmentExactLine(int line, std::vector<cv::Rect> allLetters, int shift);

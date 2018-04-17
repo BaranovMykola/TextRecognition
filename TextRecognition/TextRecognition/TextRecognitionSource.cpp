@@ -15,6 +15,7 @@
 #include "Line.h"
 #include "Space.h"
 #include <opencv2/imgproc.hpp>
+#include "LineExtracting.h"
 
 int main(int argc, char* cargv[])
 {
@@ -107,7 +108,7 @@ int main(int argc, char* cargv[])
 
 			lines = clearMultipleLines(lines, binary);
 
-			segmentExactLine(lines[10], binary);
+			segmentExactLine(lines[0], binary);
 		}
 		while (true);
 	}
@@ -144,6 +145,10 @@ int main(int argc, char* cargv[])
 	else if (action == "_space")
 	{
 		demo::spaceRelease(); // 1,2,3,4,6,7
+	}
+	else if(action == "_segmentLine")
+	{
+		demo::extractLines();
 	}
 
 	currentTime = time(0);
