@@ -75,6 +75,7 @@ void demo::extractLines()
 
 	auto allLetters = encloseLetters(binary);
 	cv::namedWindow("Result", CV_WINDOW_FREERATIO);
+	auto allSortedLetters = segmentAllLines(binary, lines);
 
 	for (auto line : lines)
 	{

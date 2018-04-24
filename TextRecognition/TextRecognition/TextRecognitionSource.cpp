@@ -108,7 +108,9 @@ int main(int argc, char* cargv[])
 
 			lines = clearMultipleLines(lines, binary);
 
-			segmentExactLine(lines[0], binary);
+			//segmentExactLine(lines[0], binary);
+
+			segmentAllLines(binary, lines);
 		}
 		while (true);
 	}

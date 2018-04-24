@@ -104,3 +104,5 @@ std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary);
  * \return Return bounding rectangles of letter that lies on exact line
  */
 std::vector<cv::Rect> _segmentExactLine(int line, std::vector<cv::Rect> allLetters, int shift);
+
+std::vector<std::vector<cv::Rect>> segmentAllLines(cv::Mat& binary, std::vector<int> lines);

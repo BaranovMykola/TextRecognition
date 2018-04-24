@@ -25,9 +25,11 @@
 #include <list>
 
 #include "Contants.h"
+#include "Line.h"
 #include "BinaryProcessing.h"
 #include "LetterDetection.h"
 #include "VectorProcessing.h"
+#include <opencv2/highgui.hpp>
 
 using namespace cv;
 
@@ -176,6 +178,9 @@ std::vector<int> detectLines(cv::Mat& binary)
 
 	freq = calculateProjectionHist(binary, &min, &max);
 	auto hist = calculateGraphicHist(freq, max);
+	namedWindow("Hist", CV_WINDOW_FREERATIO);
+	imshow("Hist", hist);
+	waitKey();
 
 	int kernel = 20; // 2n+1
 	for (int i = kernel; i < freq.size() - kernel; ++i)
@@ -185,6 +190,8 @@ std::vector<int> detectLines(cv::Mat& binary)
 
 	max = *std::max_element(freq.begin(), freq.end());
 	hist = calculateGraphicHist(freq, max);
+	imshow("Hist", hist);
+	waitKey();
 #endif
 
 	//auto lines = convertFreqToLines(freq, max);
@@ -298,3 +305,65 @@ std::vector<cv::Rect> _segmentExactLine(int line, std::vector<cv::Rect> allLette
 	return letters;
 }
 
+int distance(cv::Rect rect, int line)
+{
+	auto rectCenter = rect.y + rect.height / 2;
+	return std::abs(line - rectCenter);
+}
+
+std::vector<std::vector<cv::Rect>> _segmentAllLines(std::vector<int> lines, std::vector<cv::Rect> rects, int shift)
+{
+	std::vector<std::vector<cv::Rect>> sortedRects(lines.size());
+
+	for (int i = 0; i < rects.size(); ++i)
+	{
+		int minDist = INT_MAX;
+		int minLine = -1;
+		rects[i].y -= shift;
+		for (int j = 0; j < lines.size(); ++j)
+		{
+			auto dist = distance(rects[i], lines[j]);
+			if(dist < minDist)
+			{
+				minDist = dist;
+				minLine = j;
+			}
+		}
+
+		sortedRects[minLine].push_back(rects[i]);
+		minLine = -1;
+	}
+
+	return sortedRects;
+}
+
+std::vector<std::vector<cv::Rect>> segmentAllLines(cv::Mat& binary, std::vector<int> lines)
+{
+	auto clone = binary.clone();
+	int shift = averLetterHight(binary) / 3 - 5 + 4;
+	binary = closeCharacters(binary);
+	auto allLetters = encloseLetters(binary);
+
+	for (auto letter : allLetters)
+	{
+		binary(letter) = 0;
+	}
+
+	auto sorted = _segmentAllLines(lines, allLetters, shift);
+#if _DEBUG
+	demo::drawLines(lines, clone);
+	namedWindow("Img", CV_WINDOW_FREERATIO);
+	for (auto element : sorted)
+	{
+		for (auto rect : element)
+		{
+			auto d1 = distance(rect, lines[1]);
+			auto d2 = distance(rect, lines[2]);
+			clone(rect) = 0;
+		}
+		imshow("Img", clone);
+		waitKey();
+	}
+#endif
+	return sorted;
+}
