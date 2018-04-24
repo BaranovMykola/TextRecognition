@@ -350,20 +350,20 @@ std::vector<std::vector<cv::Rect>> segmentAllLines(cv::Mat& binary, std::vector<
 	}
 
 	auto sorted = _segmentAllLines(lines, allLetters, shift);
-#if _DEBUG
-	demo::drawLines(lines, clone);
-	namedWindow("Img", CV_WINDOW_FREERATIO);
-	for (auto element : sorted)
-	{
-		for (auto rect : element)
-		{
-			auto d1 = distance(rect, lines[1]);
-			auto d2 = distance(rect, lines[2]);
-			clone(rect) = 0;
-		}
-		imshow("Img", clone);
-		waitKey();
-	}
-#endif
+//#if _DEBUG
+//	demo::drawLines(lines, clone);
+//	namedWindow("Img", CV_WINDOW_FREERATIO);
+//	for (auto element : sorted)
+//	{
+//		for (auto rect : element)
+//		{
+//			auto d1 = distance(rect, lines[1]);
+//			auto d2 = distance(rect, lines[2]);
+//			clone(rect) = 0;
+//		}
+//		imshow("Img", clone);
+//		waitKey();
+//	}
+//#endif
 	return sorted;
 }

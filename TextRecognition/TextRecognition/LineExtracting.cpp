@@ -77,11 +77,12 @@ void demo::extractLines()
 	cv::namedWindow("Result", CV_WINDOW_FREERATIO);
 	auto allSortedLetters = segmentAllLines(binary, lines);
 
-	for (auto line : lines)
+	for (auto i : allSortedLetters)
 	{
-		auto letters = _segmentExactLine(line, allLetters, shift);
-		for (auto ch : letters)
+		std::sort(i.begin(), i.end(), [](cv::Rect l, cv::Rect r) {return l.x < r.x; });
+		for (auto ch : i)
 		{
+			ch.y -= shift;
 			backup(ch).copyTo(draw(ch));
 			cv::imshow("Result", draw);
 			cv::waitKey(1);
