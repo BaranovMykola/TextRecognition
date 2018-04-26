@@ -1,6 +1,8 @@
 #include "VectorProcessing.h"
 
 #include  <numeric>
+#include "Contants.h"
+#include <opencv2/imgproc.hpp>
 
 std::vector<int> vec::findLocalMaxima(std::vector<int> freq)
 {
@@ -57,4 +59,31 @@ bool vec::checkMax(std::vector<int> freq, int elemIndex)
 	}
 
 	return rightNoGrater & leftNoGrater;
+}
+
+std::vector<int> vec::blutHistogram(const std::vector<int>& freq)
+{
+	std::vector<int> bluredHistogram(freq.size());
+	for (int i = HISTOGRAM_BLUR_KERNEL_SIZE; i < freq.size() - HISTOGRAM_BLUR_KERNEL_SIZE; ++i)
+	{
+		bluredHistogram[i] = std::accumulate(freq.begin() + i - HISTOGRAM_BLUR_KERNEL_SIZE, freq.begin() + i + HISTOGRAM_BLUR_KERNEL_SIZE, 0) / (HISTOGRAM_BLUR_KERNEL_SIZE * 2 + 1);
+	}
+
+	return bluredHistogram;
+}
+
+cv::Mat vec::calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
+{
+	cv::Mat hist = cv::Mat::zeros(cv::Size(bins, static_cast<int>(freq.size())), CV_8UC1);
+	for (unsigned int i = 0; i < freq.size(); i++)
+	{
+		line(hist, cv::Point(0, i), cv::Point(bins*freq[i] / maxFreq, i), cv::Scalar::all(254));
+	}
+	return hist;
+}
+
+int vec::distance(cv::Rect rect, int line)
+{
+	auto rectCenter = rect.y + rect.height / 2;
+	return std::abs(line - rectCenter);
 }

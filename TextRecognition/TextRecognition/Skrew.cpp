@@ -13,6 +13,8 @@
 #include "Contants.h"
 #include "ReleaseFunction.h"
 #include <numeric>
+#include "BinaryProcessing.h"
+#include "VectorProcessing.h"
 
 using namespace cv;
 
@@ -74,7 +76,7 @@ namespace demo
 		{
 			tryAngle(angle, i, resizedImage, maxDev);
 
-			preview = rotate(binary, i);
+			preview = mat::rotate(binary, i);
 			imshow("Rotate", preview);
 			waitKey(delay);
 		}
@@ -83,13 +85,13 @@ namespace demo
 		{
 			tryAngle(angle, i, resizedImage, maxDev);
 
-			preview = rotate(binary, i);
+			preview = mat::rotate(binary, i);
 			imshow("Rotate", preview);
 			waitKey(delay);
 		}
 
 
-		binary = rotate(binary, angle);
+		binary = mat::rotate(binary, angle);
 		imshow("Rotate", binary);
 		destroyWindow("Current Hist");
 
@@ -103,8 +105,8 @@ namespace demo
 	{
 		int min;
 		int max;
-		cv::Mat thresh = rotate(resizedImage, newAngle);
-		auto freq = calculateProjectionHist(thresh, &min, &max);
+		cv::Mat thresh = mat::rotate(resizedImage, newAngle);
+		auto freq = mat::calculateProjectionHist(thresh, &min, &max);
 
 
 		int aver = std::accumulate(freq.begin(), freq.end(), 0);
@@ -115,7 +117,7 @@ namespace demo
 			return acc + pow((aver - elem), 2);
 		}));
 
-		auto hist = calculateGraphicHist(freq, max);
+		auto hist = vec::calculateGraphicHist(freq, max);
 		imshow("Current Hist", hist);
 		if (maxDev < dev)
 		{

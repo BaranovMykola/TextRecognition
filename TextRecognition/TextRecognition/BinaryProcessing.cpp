@@ -22,8 +22,13 @@
 
 #include "LineSegmentation.h"
 #include "LetterDetection.h"
+#include <opencv2/imgproc.hpp>
+#include "Contants.h"
 
-cv::Mat fillLetters(cv::Mat & binary)
+using namespace cv;
+using namespace std;
+
+cv::Mat mat::fillLetters(cv::Mat & binary)
 {
 	auto chars = encloseLetters(binary);
 	auto copy = binary.clone();
@@ -34,7 +39,7 @@ cv::Mat fillLetters(cv::Mat & binary)
 	return copy;
 }
 
-std::vector<int> extractLinesPosition(std::vector<int> freq)
+std::vector<int> mat::extractLinesPosition(std::vector<int> freq)
 {
 	std::vector<int> linesPoistion;
 
@@ -63,7 +68,7 @@ std::vector<int> extractLinesPosition(std::vector<int> freq)
 	return linesPoistion;
 }
 
-std::vector<int> thresholdLines(std::vector<int> freq)
+std::vector<int> mat::thresholdLines(std::vector<int> freq)
 {
 	double average = std::accumulate(freq.begin(), freq.end(), 0) / (double)freq.size();
 	auto minmax = std::minmax_element(freq.begin(), freq.end());
@@ -73,10 +78,67 @@ std::vector<int> thresholdLines(std::vector<int> freq)
 	return freq;
 }
 
-void threshold(std::vector<int>& freq, int t, int max)
+void mat::threshold(std::vector<int>& freq, int t, int max)
 {
 	for (auto& i : freq)
 	{
 		i = i >= t ? max : i;
 	}
+}
+
+cv::Mat mat::lineMorphologyEx(cv::Mat& binary)
+{
+	cv::Mat processed;
+	morphologyEx(binary, processed, cv::MORPH_ERODE, getStructuringElement(cv::MORPH_RECT, cv::Size(HORIZONTAL_LINE_MORPHOLOGY_KERNEL_SIZE, 1)));
+	return processed;
+}
+
+std::vector<int> mat::calculateProjectionHist(cv::Mat& binary, int* min, int* max)
+{
+	{
+		std::vector<int> freq;
+		int _min = binary.cols;
+		int _max = 0;
+		for (int i = 0; i < binary.rows; i++)
+		{
+			uchar* row = binary.ptr<uchar>(i);
+			int nonZeroQuantity = static_cast<int>(std::count_if(row, row + binary.cols, [](uchar p)
+			{
+				return p == 0;
+			}));
+			freq.push_back(nonZeroQuantity);
+			if (_min > nonZeroQuantity)
+			{
+				_min = nonZeroQuantity;
+			}
+			if (_max < nonZeroQuantity)
+			{
+				_max = nonZeroQuantity;
+			}
+		}
+
+		if (min != nullptr)
+		{
+			*min = _min;
+		}
+		if (max != nullptr)
+		{
+			*max = _max;
+		}
+
+		return freq;
+	}
+}
+
+cv::Mat mat::rotate(cv::Mat& source, int angle)
+{
+	auto center = Point2f(source.cols / float(2), source.rows / float(2));
+	cv::Mat rotateMat = getRotationMatrix2D(center, angle, 1);
+	auto rotRect = RotatedRect(center, source.size(), static_cast<float>(angle)).boundingRect();
+	rotateMat.at<double>(0, 2) += rotRect.width / 2.0 - center.x;
+	rotateMat.at<double>(1, 2) += rotRect.height / 2.0 - center.y;
+
+	cv::Mat rotatedImg = Mat::zeros(source.size(), source.type());
+	warpAffine(source, rotatedImg, rotateMat, rotRect.size() - Size(1, 1), cv::INTER_LINEAR, BORDER_CONSTANT, Scalar::all(255));
+	return rotatedImg;
 }

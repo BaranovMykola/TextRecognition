@@ -21,31 +21,59 @@
 
 #include <vector>
 
-/**
- * \brief Fill all letters in black
- * \param binary Binary image
- * \return Returns images with filled letters in black color
- */
-cv::Mat fillLetters(cv::Mat& binary);
 
-/**
- * \brief Calculate exact lines position
- * \param freq Vertical projection histogram. See calculateProjHist(cv::Mat&)
- * \return Return vector of exact lines position
- */
-std::vector<int> extractLinesPosition(std::vector<int> freq);
+namespace mat
+{
+	/**
+	 * \brief Fill all letters in black
+	 * \param binary Binary image
+	 * \return Returns images with filled letters in black color
+	 */
+	cv::Mat fillLetters(cv::Mat& binary);
 
-/**
- * \brief Detects lines range from vertical projection histogram
- * \param freq Vertical projection histogram. See calculateProjHist(cv::Mat&)
- * \return Returns thresholded histogram. Thresholded position means line
- */
-std::vector<int> thresholdLines(std::vector<int> freq);
+	/**
+	 * \brief Calculate exact lines position
+	 * \param freq Vertical projection histogram. See calculateProjHist(cv::Mat&)
+	 * \return Return vector of exact lines position
+	 */
+	std::vector<int> extractLinesPosition(std::vector<int> freq);
 
-/**
- * \brief Thresholded histogram
- * \param freq Vertical projection histogram. See calculateProjHist(cv::Mat&)
- * \param t Threshold level
- * \param max Values to replace values higher than threshold level
- */
-void threshold(std::vector<int>& freq, int t, int max);
+	/**
+	 * \brief Detects lines range from vertical projection histogram
+	 * \param freq Vertical projection histogram. See calculateProjHist(cv::Mat&)
+	 * \return Returns thresholded histogram. Thresholded position means line
+	 */
+	std::vector<int> thresholdLines(std::vector<int> freq);
+
+	/**
+	 * \brief Thresholded histogram
+	 * \param freq Vertical projection histogram. See calculateProjHist(cv::Mat&)
+	 * \param t Threshold level
+	 * \param max Values to replace values higher than threshold level
+	 */
+	void threshold(std::vector<int>& freq, int t, int max);
+
+	/**
+	 * \brief Apply morphology operation for improoving line detection accuracy
+	 * \param binary Binary image with thresholded lines
+	 * \return Return binary image with applied morphlogy operations
+	 */
+	cv::Mat lineMorphologyEx(cv::Mat& binary);
+
+	/**
+	* \brief Calculate vertical projection histogram - count of zero pixels in each row
+	* \param binary Binary image
+	* \param min Minimum histogram value (optional)
+	* \param max Maximum histogram value (optional)
+	* \return Returns vertical projection histogram
+	*/
+	std::vector<int> calculateProjectionHist(cv::Mat& binary, int* min = 0, int* max = 0);
+
+	/**
+	* \brief Rotate image with croping size
+	* \param source Image to rotate
+	* \param angle Angle to rotate at
+	* \return Returns rotated image
+	*/
+	cv::Mat rotate(cv::Mat& source, int angle);
+}

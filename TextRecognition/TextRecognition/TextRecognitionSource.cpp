@@ -16,6 +16,7 @@
 #include "Space.h"
 #include <opencv2/imgproc.hpp>
 #include "LineExtracting.h"
+#include "Deskew.h"
 
 int main(int argc, char* cargv[])
 {
@@ -100,7 +101,7 @@ int main(int argc, char* cargv[])
 		
 			auto skew = findSkew(thresh);
 
-			auto binary = rotate(thresh, skew);
+			auto binary = mat::rotate(thresh, skew);
 
 			cv::threshold(binary, binary, 127, 255, CV_THRESH_BINARY);
 
@@ -123,7 +124,7 @@ int main(int argc, char* cargv[])
 
 		img = letterHighligh(img);
 
-		img = rotate(img, findSkew(img));
+		img = mat::rotate(img, findSkew(img));
 
 		img = closeCharacters(img);
 

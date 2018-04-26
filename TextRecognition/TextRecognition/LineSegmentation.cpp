@@ -33,63 +33,63 @@
 
 using namespace cv;
 
-std::vector<int> calculateProjectionHist(cv::Mat & binary, int * min, int * max)
-{
-	std::vector<int> freq;
-	int _min = binary.cols;
-	int _max = 0;
-	for (int i = 0; i < binary.rows; i++)
-	{
-		uchar* row = binary.ptr<uchar>(i);
-		int nonZeroQuantity = static_cast<int>(std::count_if(row, row + binary.cols, [](uchar p)
-		{
-			return p == 0;
-		}));
-		freq.push_back(nonZeroQuantity);
-		if (_min > nonZeroQuantity)
-		{
-			_min = nonZeroQuantity;
-		}
-		if (_max < nonZeroQuantity)
-		{
-			_max = nonZeroQuantity;
-		}
-	}
+//std::vector<int> calculateProjectionHist(cv::Mat & binary, int * min, int * max)
+//{
+//	std::vector<int> freq;
+//	int _min = binary.cols;
+//	int _max = 0;
+//	for (int i = 0; i < binary.rows; i++)
+//	{
+//		uchar* row = binary.ptr<uchar>(i);
+//		int nonZeroQuantity = static_cast<int>(std::count_if(row, row + binary.cols, [](uchar p)
+//		{
+//			return p == 0;
+//		}));
+//		freq.push_back(nonZeroQuantity);
+//		if (_min > nonZeroQuantity)
+//		{
+//			_min = nonZeroQuantity;
+//		}
+//		if (_max < nonZeroQuantity)
+//		{
+//			_max = nonZeroQuantity;
+//		}
+//	}
+//
+//	if (min != nullptr)
+//	{
+//		*min = _min;
+//	}
+//	if (max != nullptr)
+//	{
+//		*max = _max;
+//	}
+//
+//	return freq;
+//}
 
-	if (min != nullptr)
-	{
-		*min = _min;
-	}
-	if (max != nullptr)
-	{
-		*max = _max;
-	}
+//cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
+//{
+//	Mat hist = Mat::zeros(Size(bins, static_cast<int>(freq.size())), CV_8UC1);
+//	for (unsigned int i = 0; i < freq.size(); i++)
+//	{
+//		line(hist, Point(0, i), Point(bins*freq[i] / maxFreq,i), Scalar::all(254));
+//	}
+//	return hist;
+//}
 
-	return freq;
-}
-
-cv::Mat calculateGraphicHist(std::vector<int> freq, int maxFreq, int bins)
-{
-	Mat hist = Mat::zeros(Size(bins, static_cast<int>(freq.size())), CV_8UC1);
-	for (unsigned int i = 0; i < freq.size(); i++)
-	{
-		line(hist, Point(0, i), Point(bins*freq[i] / maxFreq,i), Scalar::all(254));
-	}
-	return hist;
-}
-
-cv::Mat rotate(cv::Mat& source, int angle)
-{
-	auto center = Point2f(source.cols / float(2), source.rows / float(2));
-	cv::Mat rotateMat = getRotationMatrix2D(center, angle, 1);
-	auto rotRect = RotatedRect(center, source.size(), static_cast<float>(angle)).boundingRect();
-	rotateMat.at<double>(0, 2) += rotRect.width / 2.0 - center.x;
-	rotateMat.at<double>(1, 2) += rotRect.height / 2.0 - center.y;
-
-	cv::Mat rotatedImg = Mat::zeros(source.size(), source.type());
-	warpAffine(source, rotatedImg, rotateMat, rotRect.size() - Size(1, 1), cv::INTER_LINEAR, BORDER_CONSTANT, Scalar::all(255));
-	return rotatedImg;
-}
+//cv::Mat rotate(cv::Mat& source, int angle)
+//{
+//	auto center = Point2f(source.cols / float(2), source.rows / float(2));
+//	cv::Mat rotateMat = getRotationMatrix2D(center, angle, 1);
+//	auto rotRect = RotatedRect(center, source.size(), static_cast<float>(angle)).boundingRect();
+//	rotateMat.at<double>(0, 2) += rotRect.width / 2.0 - center.x;
+//	rotateMat.at<double>(1, 2) += rotRect.height / 2.0 - center.y;
+//
+//	cv::Mat rotatedImg = Mat::zeros(source.size(), source.type());
+//	warpAffine(source, rotatedImg, rotateMat, rotRect.size() - Size(1, 1), cv::INTER_LINEAR, BORDER_CONSTANT, Scalar::all(255));
+//	return rotatedImg;
+//}
 
 int findDev(std::vector<bool> lines)
 {
@@ -117,118 +117,41 @@ int findDev(std::vector<bool> lines)
 	return abs(min - max);
 }
 
-int findSkew(cv::Mat binary)
-{
-	long long maxDev = 0;
-	int angle = 0;
-	float sizeModifier = std::min({ binary.cols / SkrewRestoringImageSize, binary.rows / SkrewRestoringImageSize });
-	sizeModifier = sizeModifier >= 1 ? sizeModifier : 1;
-	Mat resizedImage;
-	cv::resize(binary, resizedImage, Size(static_cast<int>(binary.cols / sizeModifier), static_cast<int>(binary.rows / sizeModifier)),0,0,INTER_NEAREST);
 
-	for (int i = -90; i <= 90; i+=5)
-	{
-		tryAngle(angle, i, resizedImage, maxDev);
-	}
-
-	for (int i = angle-4; i <= angle+4 && i != 0; i++)
-	{
-		tryAngle(angle, i, resizedImage, maxDev);
-	}
-
-	binary = rotate(binary, angle);
-	return angle;
-}
-
-void tryAngle(int& angle, int newAngle, cv::Mat& resizedImage, long long& maxDev)
-{
-	int min;
-	int max;
-	cv::Mat thresh = rotate(resizedImage, newAngle);
-	auto freq = calculateProjectionHist(thresh, &min, &max);
-
-	int aver = std::accumulate(freq.begin(), freq.end(), 0);
-	aver /= static_cast<int>(freq.size());
-
-	long long dev = static_cast<long long>(accumulate(freq.begin(), freq.end(), 0.0, [&](double acc, int elem)
-	{
-		return acc + pow((aver - elem), 2);
-	}));
-
-	if (maxDev < dev)
-	{
-		maxDev = dev;
-		angle = newAngle;
-	}
-}
 
 std::vector<int> detectLines(cv::Mat& binary)
 {
 	int min;
 	int max;
-	auto freq = calculateProjectionHist(binary, &min, &max);
-
-	freq = thresholdLines(freq);
-
-	auto h = calculateGraphicHist(freq, max);
-
-#if _DEBUG
-	Mat b;
-	morphologyEx(binary, b, MORPH_ERODE, getStructuringElement(MORPH_RECT, Size(40, 1)));
-
-	freq = calculateProjectionHist(binary, &min, &max);
-	auto hist = calculateGraphicHist(freq, max);
-	namedWindow("Hist", CV_WINDOW_FREERATIO);
-	imshow("Hist", hist);
-	waitKey();
-
-	int kernel = 20; // 2n+1
-	for (int i = kernel; i < freq.size() - kernel; ++i)
-	{
-		freq[i] = std::accumulate(freq.begin() + i - kernel, freq.begin() + i + kernel, 0) / (kernel * 2 + 1);
-	}
-
-	max = *std::max_element(freq.begin(), freq.end());
-	hist = calculateGraphicHist(freq, max);
-	imshow("Hist", hist);
-	waitKey();
-#endif
-
-	//auto lines = convertFreqToLines(freq, max);
+	Mat b = mat::lineMorphologyEx(binary);
+	auto freq = mat::calculateProjectionHist(binary, &min, &max);
+	freq = vec::blutHistogram(freq);
 
 	auto lines = vec::findLocalMaxima(freq);
-
-#if _DEBUG
-	Mat draw = binary.clone();
-	for (auto line : lines)
-	{
-		cv::line(draw, Point(0, line), Point(binary.cols, line), Scalar(127), 5);
-	}
-#endif
 
 	return lines;
 }
 
-std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max)
-{
-	auto lowerBound = threshFreq.begin();
-	std::vector<int> lineList;
-	while(lowerBound != threshFreq.end())
-	{
-		auto lBound = std::find(lowerBound, threshFreq.end(), max);
-		auto uBound = std::find_if(lBound, threshFreq.end(), [&](auto i) {return i != max; });
-		if(lBound == uBound)
-		{
-			break;
-		}
-		int startGroup = static_cast<int>(std::distance(threshFreq.begin(), lBound));
-		int endGroup = startGroup + static_cast<int>(std::distance(lBound, uBound))-1;
-		int line = (startGroup + endGroup) / 2;
-		lineList.push_back(line);
-		lowerBound = uBound;
-	}
-	return lineList;
-}
+//std::vector<int> convertFreqToLines(std::vector<int> threshFreq, int max)
+//{
+//	auto lowerBound = threshFreq.begin();
+//	std::vector<int> lineList;
+//	while(lowerBound != threshFreq.end())
+//	{
+//		auto lBound = std::find(lowerBound, threshFreq.end(), max);
+//		auto uBound = std::find_if(lBound, threshFreq.end(), [&](auto i) {return i != max; });
+//		if(lBound == uBound)
+//		{
+//			break;
+//		}
+//		int startGroup = static_cast<int>(std::distance(threshFreq.begin(), lBound));
+//		int endGroup = startGroup + static_cast<int>(std::distance(lBound, uBound))-1;
+//		int line = (startGroup + endGroup) / 2;
+//		lineList.push_back(line);
+//		lowerBound = uBound;
+//	}
+//	return lineList;
+//}
 
 std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 {
@@ -272,57 +195,51 @@ std::vector<int> clearMultipleLines(std::vector<int> lines, cv::Mat& binary)
 	return clearedLines;
 }
 
-std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
-{
-	auto clone = binary.clone();
-	int shift = averLetterHight(binary)/3-5+4;
-	binary = closeCharacters(binary);
-	auto allLetters = encloseLetters(binary);
+//std::vector<cv::Rect> segmentExactLine(int line, cv::Mat& binary)
+//{
+//	auto clone = binary.clone();
+//	int shift = averLetterHight(binary)/3-5+4;
+//	binary = closeCharacters(binary);
+//	auto allLetters = encloseLetters(binary);
+//
+//	for (auto letter : allLetters)
+//	{
+//		binary(letter) = 0;
+//	}
+//
+//	return _segmentExactLine(line, allLetters, shift);
+//}
 
-	for (auto letter : allLetters)
-	{
-		binary(letter) = 0;
-	}
+//std::vector<cv::Rect> _segmentExactLine(int line, std::vector<cv::Rect> allLetters, int shift)
+//{
+//	std::vector<cv::Rect> letters;
+//
+//	for (auto ch : allLetters)
+//	{
+//		if (ch.y < line && ch.y + ch.height > line)
+//		{
+//			ch.y -= shift;
+//			letters.push_back(ch);
+//		}
+//	}
+//
+//	std::sort(letters.begin(), letters.end(), [](auto l, auto r) {return l.x < r.x; });
+//
+//	return letters;
+//}
 
-	return _segmentExactLine(line, allLetters, shift);
-}
-
-std::vector<cv::Rect> _segmentExactLine(int line, std::vector<cv::Rect> allLetters, int shift)
-{
-	std::vector<cv::Rect> letters;
-
-	for (auto ch : allLetters)
-	{
-		if (ch.y < line && ch.y + ch.height > line)
-		{
-			ch.y -= shift;
-			letters.push_back(ch);
-		}
-	}
-
-	std::sort(letters.begin(), letters.end(), [](auto l, auto r) {return l.x < r.x; });
-
-	return letters;
-}
-
-int distance(cv::Rect rect, int line)
-{
-	auto rectCenter = rect.y + rect.height / 2;
-	return std::abs(line - rectCenter);
-}
-
-std::vector<std::vector<cv::Rect>> _segmentAllLines(std::vector<int> lines, std::vector<cv::Rect> rects, int shift)
+std::vector<std::vector<cv::Rect>> segmentAllLines(std::vector<int> lines, std::vector<cv::Rect> rects, int shift)
 {
 	std::vector<std::vector<cv::Rect>> sortedRects(lines.size());
 
-	for (int i = 0; i < rects.size(); ++i)
+	for (auto& rect : rects)
 	{
 		int minDist = INT_MAX;
 		int minLine = -1;
-		rects[i].y -= shift;
+		rect.y -= shift;
 		for (int j = 0; j < lines.size(); ++j)
 		{
-			auto dist = distance(rects[i], lines[j]);
+			auto dist = vec::distance(rect, lines[j]);
 			if(dist < minDist)
 			{
 				minDist = dist;
@@ -330,7 +247,11 @@ std::vector<std::vector<cv::Rect>> _segmentAllLines(std::vector<int> lines, std:
 			}
 		}
 
-		sortedRects[minLine].push_back(rects[i]);
+		if(rect.y < 0)
+		{
+			rect.y = 0;
+		}
+		sortedRects[minLine].push_back(rect);
 		minLine = -1;
 	}
 
@@ -341,29 +262,14 @@ std::vector<std::vector<cv::Rect>> segmentAllLines(cv::Mat& binary, std::vector<
 {
 	auto clone = binary.clone();
 	int shift = averLetterHight(binary) / 3 - 5 + 4;
-	binary = closeCharacters(binary);
-	auto allLetters = encloseLetters(binary);
+	clone = closeCharacters(binary);
+	auto allLetters = encloseLetters(clone);
 
-	for (auto letter : allLetters)
-	{
-		binary(letter) = 0;
-	}
+	//for (auto letter : allLetters)
+	//{
+	//	binary(letter) = 0;
+	//}
 
-	auto sorted = _segmentAllLines(lines, allLetters, shift);
-//#if _DEBUG
-//	demo::drawLines(lines, clone);
-//	namedWindow("Img", CV_WINDOW_FREERATIO);
-//	for (auto element : sorted)
-//	{
-//		for (auto rect : element)
-//		{
-//			auto d1 = distance(rect, lines[1]);
-//			auto d2 = distance(rect, lines[2]);
-//			clone(rect) = 0;
-//		}
-//		imshow("Img", clone);
-//		waitKey();
-//	}
-//#endif
+	auto sorted = segmentAllLines(lines, allLetters, shift);
 	return sorted;
 }

@@ -11,6 +11,8 @@
 #include "LetterDetection.h"
 #include <numeric>
 #include <opencv2/imgproc.hpp>
+#include "WordSegmentation.h"
+#include "Deskew.h"
 
 void demo::LineRelease()
 {
@@ -38,7 +40,7 @@ void demo::LineRelease()
 
 	auto skew = findSkew(thresh);
 
-	auto binary = rotate(thresh, skew);
+	auto binary = mat::rotate(thresh, skew);
 
 	auto rectangles = encloseLetters(binary);
 

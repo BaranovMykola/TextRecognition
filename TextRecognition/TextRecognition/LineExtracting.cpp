@@ -7,6 +7,8 @@
 #include "ReleaseFunction.h"
 #include "Line.h"
 #include "LetterDetection.h"
+#include "WordSegmentation.h"
+#include "Deskew.h"
 
 void demo::extractLines()
 {
@@ -34,7 +36,7 @@ void demo::extractLines()
 
 	auto skew = findSkew(thresh);
 
-	auto binary = rotate(thresh, skew);
+	auto binary = mat::rotate(thresh, skew);
 
 	auto rectangles = encloseLetters(binary);
 
@@ -71,18 +73,17 @@ void demo::extractLines()
 	cv::Mat draw(binary.size(), CV_8UC1);
 	draw = 255;
 
-	binary = closeCharacters(binary);
+	//binary = closeCharacters(binary);
 
-	auto allLetters = encloseLetters(binary);
+	//auto allLetters = encloseLetters(backup);
 	cv::namedWindow("Result", CV_WINDOW_FREERATIO);
-	auto allSortedLetters = segmentAllLines(binary, lines);
+	auto allSortedLetters = segmentAllLines(backup, lines);
 
 	for (auto i : allSortedLetters)
 	{
 		std::sort(i.begin(), i.end(), [](cv::Rect l, cv::Rect r) {return l.x < r.x; });
 		for (auto ch : i)
 		{
-			ch.y -= shift;
 			backup(ch).copyTo(draw(ch));
 			cv::imshow("Result", draw);
 			cv::waitKey(1);

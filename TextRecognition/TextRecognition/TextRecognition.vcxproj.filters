@@ -16,9 +16,6 @@
     <ClCompile Include="LineSegmentation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BinaryProcessing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FileLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,7 +37,15 @@
     <ClCompile Include="LineExtracting.cpp">
       <Filter>DemoRelease\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VectorProcessing.cpp" />
+    <ClCompile Include="VectorProcessing.cpp">
+      <Filter>Vector Processing\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryProcessing.cpp">
+      <Filter>Matrix Processing\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Deskew.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contants.h">
@@ -56,9 +61,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RectComparator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BinaryProcessing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileLoading.h">
@@ -82,7 +84,15 @@
     <ClInclude Include="LineExtracting.h">
       <Filter>DemoRelease\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="VectorProcessing.h" />
+    <ClInclude Include="VectorProcessing.h">
+      <Filter>Vector Processing\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryProcessing.h">
+      <Filter>Matrix Processing\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Deskew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -99,6 +109,24 @@
     </Filter>
     <Filter Include="DemoRelease\Source Files">
       <UniqueIdentifier>{ec22d0ee-781f-495c-a085-d530250c912a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix Processing">
+      <UniqueIdentifier>{1ee6d290-779c-46fb-8753-11e1bc17f267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector Processing">
+      <UniqueIdentifier>{ffc33aa6-7007-4f23-8b1b-7b8c2cc2705c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector Processing\Source Files">
+      <UniqueIdentifier>{a5fca05f-6999-4c6b-8434-726818823eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector Processing\Header Files">
+      <UniqueIdentifier>{727523c7-d336-40dc-a822-6a40333b7080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix Processing\Header Files">
+      <UniqueIdentifier>{6d604ba9-98bd-4b52-a4d7-618409f7ca7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix Processing\Source Files">
+      <UniqueIdentifier>{bf93add7-22bc-4afa-a63c-f73a9e3c5425}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

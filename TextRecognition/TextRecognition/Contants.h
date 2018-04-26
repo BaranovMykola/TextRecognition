@@ -48,3 +48,10 @@ const std::string TextDatasetPathPrefix = SamplePathPrefix + "dataset/source/";
  * \brief Max resolution of images to skrew detection
  */
 const float SkrewRestoringImageSize = 500;
+
+/**
+ * \brief Size of morphology kernel size that uses for binary image preprocessing before line detection
+ */
+const int HORIZONTAL_LINE_MORPHOLOGY_KERNEL_SIZE = 40;
+
+const int HISTOGRAM_BLUR_KERNEL_SIZE = 20;

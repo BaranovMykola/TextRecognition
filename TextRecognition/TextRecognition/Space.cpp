@@ -9,6 +9,7 @@
 #include "WordSegmentation.h"
 #include <opencv2/imgproc.hpp>
 #include "LetterDetection.h"
+#include "Deskew.h"
 
 void demo::spaceRelease()
 {
@@ -36,7 +37,7 @@ void demo::spaceRelease()
 
 	auto skew = findSkew(thresh);
 
-	auto binary = rotate(thresh, skew);
+	auto binary = mat::rotate(thresh, skew);
 	
 	makePreview(binary, preview);
 	cv::imshow("Binary", preview);
