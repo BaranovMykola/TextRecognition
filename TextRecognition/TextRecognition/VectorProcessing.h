@@ -26,4 +26,8 @@ namespace vec
 	 * \return Return distance between rectangle and line
 	 */
 	int distance(cv::Rect rect, int line);
+
+	int distance(cv::Rect rect1, cv::Rect rect2);
+
+	int averageXDistance(std::vector<cv::Rect> letters);
 }

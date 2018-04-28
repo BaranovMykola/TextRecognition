@@ -19,6 +19,7 @@
 #include "WordSegmentation.h"
 
 #include <opencv2\imgproc.hpp>
+#include "VectorProcessing.h"
 
 using namespace cv;
 
@@ -67,4 +68,20 @@ int _rowAverageDistance(uchar * row, size_t size)
 		result = accumulate / count;
 	}
 	return result;
+}
+
+std::vector<int> checkSpaces(std::vector<cv::Rect> lettersInRow)
+{
+	int averageDist = vec::averageXDistance(lettersInRow);
+	std::vector<int> spaces;
+
+	for (int i = 0; i < (int)(lettersInRow.size())-1; ++i)
+	{
+		if(vec::distance(lettersInRow[i], lettersInRow[i+1]) > averageDist*2)
+		{
+			spaces.push_back(i+1);
+		}
+	}
+
+	return spaces;
 }

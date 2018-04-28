@@ -49,3 +49,5 @@ Calculate average distance between black pixels for certain row
 @param size Length of row
 */
 int _rowAverageDistance(uchar* row, size_t size);
+
+std::vector<int> checkSpaces(std::vector<cv::Rect> lettersInRow);

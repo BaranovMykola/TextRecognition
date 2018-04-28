@@ -87,3 +87,20 @@ int vec::distance(cv::Rect rect, int line)
 	auto rectCenter = rect.y + rect.height / 2;
 	return std::abs(line - rectCenter);
 }
+
+int vec::distance(cv::Rect rect1, cv::Rect rect2)
+{
+	return rect2.x - (rect1.x + rect1.width);
+}
+
+int vec::averageXDistance(std::vector<cv::Rect> letters)
+{
+	int sum = 0;
+	for (int i = 0; i < (int)(letters.size())-1; ++i)
+	{
+		sum += distance(letters[i], letters[i + 1]);
+	}
+
+	sum /= (letters.size() - 1);
+	return sum;
+}

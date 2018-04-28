@@ -38,9 +38,40 @@ void demo::spaceRelease()
 	auto skew = findSkew(thresh);
 
 	auto binary = mat::rotate(thresh, skew);
+
+	auto filled = mat::fillLetters(binary);
 	
-	makePreview(binary, preview);
-	cv::imshow("Binary", preview);
-	cv::waitKey();
+	/*makePreview(filled, preview);
+	cv::imshow("Filled", preview);
+	cv::waitKey();*/
+
+	auto lines = detectLines(filled);
+	auto sortedLetters = segmentAllLines(binary, lines);
+
+
+	cv::Mat draw(binary.size(), CV_8UC1);
+	draw = 255;
+
+	for (int line = 0; line < lines.size(); ++line)
+	{
+		int s = 0;
+		std::sort(sortedLetters[line].begin(), sortedLetters[line].end(), [](auto l, auto r) {return l.x < r.x; });
+		auto spaces = checkSpaces(sortedLetters[line]);
+		for (int i = 0; i < sortedLetters[line].size(); ++i)
+		{
+			if(s < spaces.size() && spaces[s] == i)
+			{
+				makePreview(draw, preview);
+				cv::imshow("Word", preview);
+				cv::waitKey(300);
+				if (s < spaces.size()-1)
+				{
+					++s;
+				}
+			}
+			binary(sortedLetters[line][i]).copyTo(draw(sortedLetters[line][i]));
+		}
+	}
+
 	cv::destroyAllWindows();
 }
