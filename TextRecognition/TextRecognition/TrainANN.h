@@ -19,6 +19,7 @@
 #pragma once
 #include <opencv2\core.hpp>
 #include <opencv2\ml.hpp>
+#include <fstream>
 
 /**
  * \brief Convert 2D matrix to 1D vector
@@ -57,3 +58,14 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp);
  * \param count Count of each letters
  */
 void printLetters(int count);
+
+void cropDataset(cv::Mat& img, std::string path);
+
+void prepareTrainData(std::string trainFile, std::string outputFile);
+
+std::string convertIntToBitArray(int label, int size);
+
+template <typename T>
+void writeVec(std::ofstream& out, cv::Mat& vec);
+
+std::vector<cv::Mat> dataAugmentation(cv::Mat& sample);

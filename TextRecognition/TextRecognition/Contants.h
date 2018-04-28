@@ -18,6 +18,7 @@
 
 #pragma once
 #include <string>
+#include <opencv2/core.hpp>
 
 /**
  * \brief Path prefix to 'samples' folder
@@ -37,7 +38,7 @@ const std::string TextSamplePathPrefix = SamplePathPrefix + "letters/original/";
 /**
  * \brief Path to test images
  */
-const std::string TestSamplePathPrefix = SamplePathPrefix + "letters/test/";
+const std::string TestSamplePathPrefix = SamplePathPrefix + "letters/original/new_dataset/";
 
 /**
  * \brief Path to dataset source images
@@ -55,3 +56,5 @@ const float SkrewRestoringImageSize = 500;
 const int HORIZONTAL_LINE_MORPHOLOGY_KERNEL_SIZE = 40;
 
 const int HISTOGRAM_BLUR_KERNEL_SIZE = 20;
+
+const cv::Size SAMPLE_SIZE = cv::Size(28, 28);

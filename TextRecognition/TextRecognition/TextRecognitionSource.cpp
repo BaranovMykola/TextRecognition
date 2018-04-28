@@ -66,18 +66,15 @@ int main(int argc, char* cargv[])
 
 			cv::namedWindow("Img", CV_WINDOW_KEEPRATIO);
 
-			auto letterThresholded = letterHighligh(img);
-			auto rects = encloseLetters(letterThresholded);
-			extractLetters(rects, img);
 			cv::imshow("Img", img);
-
 
 			if (cv::waitKey() == 27)
 			{
 				return 0;
 			}
-			cv::destroyAllWindows();
 
+			cv::destroyAllWindows();
+			cropDataset(img, TextDatasetPathPrefix);
 		}
 		while (action != "q");
 	}
@@ -165,6 +162,11 @@ int main(int argc, char* cargv[])
 
 		PageSegmentation ps(img);
 		ps.detect(loadANN(ClassifierPrefix+"28x28_MLP_H0"));
+	}
+	else if(action == "make")
+	{
+		std::cout << "Started generating train data..." << std::endl;
+		prepareTrainData(SamplePathPrefix + "dataset/train_data/train.txt", SamplePathPrefix + "dataset/train_data/trainData.txt");
 	}
 
 	currentTime = time(0);

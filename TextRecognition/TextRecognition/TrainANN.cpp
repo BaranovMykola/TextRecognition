@@ -21,8 +21,13 @@
 #include <opencv2\highgui.hpp>
 #include <iostream>
 #include <numeric>
+#include  <fstream>
 
 #include "Contants.h"
+#include "WordSegmentation.h"
+#include "Deskew.h"
+#include "LetterDetection.h"
+#include <memory>
 
 using namespace std;
 using namespace cv;
@@ -167,13 +172,99 @@ void testANN(cv::Ptr<cv::ml::ANN_MLP> mlp)
 void printLetters(int count)
 {
 	setlocale(LC_CTYPE, "ukr");
-	std::string letters = "ÀàÁáÂâÃã¥´ÄäÅåªºÆæÇçÈè²³¯¿ÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÜüŞşßÿ";
+	std::string letters = "ÀàÁáÂâÃãÄäÅåªºÆæÇçÈè²³¯¿ÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÜüŞşßÿ";
 	for (auto i : letters)
 	{
 		for (int j = 0; j < count; j++)
 		{
 			cout << i << " ";
 		}
+		cout << endl;
+		for (int j = 0; j < count; j++)
+		{
+			cout << i << " ";
+		}
 		cout << endl << endl;
+	}
+}
+
+void cropDataset(cv::Mat& img, string path)
+{
+	auto thresh = letterHighligh(img);
+	auto skew = findSkew(thresh);
+	auto binary = mat::rotate(thresh, skew);
+	threshold(binary, binary, 127, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+	auto clone = binary.clone();
+	Mat closed;
+	morphologyEx(binary, closed, MORPH_OPEN, getStructuringElement(MORPH_RECT, Size(10, 20)));
+	auto letters = encloseLetters(closed);
+
+	int id = 0;
+	for (auto& letter : letters)
+	{
+		imwrite(path + std::to_string(id) + ".jpg", binary(letter));
+		++id;
+	}
+}
+
+void prepareTrainData(std::string trainFile, std::string outputFile)
+{
+	ifstream train;
+	ofstream data(outputFile);
+	train.open(trainFile);
+
+	string input;
+	int label;
+	int processSample = 0;
+	while(!train.eof())
+	{
+		train >> input;
+		train >> label;
+
+		Mat sample = imread(input, CV_LOAD_IMAGE_GRAYSCALE);
+		Mat resized;
+		cv::resize(sample, resized, SAMPLE_SIZE);
+		threshold(resized, resized, 127, 255, THRESH_BINARY);
+		normalize(resized, resized, 0, 1, NORM_MINMAX);
+		sample = resized;
+
+		auto samples = dataAugmentation(sample);
+
+		for (auto item : samples)
+		{
+			auto vec = convertMatToVec(item);
+			writeVec<float>(data, vec);
+			data << label;
+			data << endl;
+		}
+	}
+}
+
+std::string convertIntToBitArray(int label, int size)
+{
+	string output;
+	for (int i = 0; i < size; ++i)
+	{
+		output += std::to_string(i % 2);
+		i /= 10;
+	}
+	return output;
+}
+
+std::vector<cv::Mat> dataAugmentation(cv::Mat& sample)
+{
+	return std::vector<cv::Mat>{ sample };
+}
+
+template <typename T>
+void writeVec(std::ofstream& out, cv::Mat& vec)
+{
+	for (int i = 0; i < vec.rows; ++i)
+	{
+		T* row = vec.ptr<T>(i);
+		for (int i = 0; i < vec.cols; ++i)
+		{
+			out << (int)row[i] << " ";
+		}
 	}
 }
