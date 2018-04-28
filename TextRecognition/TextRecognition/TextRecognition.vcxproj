@@ -161,6 +161,7 @@
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="LineExtracting.cpp" />
     <ClCompile Include="LineSegmentation.cpp" />
+    <ClCompile Include="PageSegmentation.cpp" />
     <ClCompile Include="RectComparator.cpp" />
     <ClCompile Include="ReleaseFunction.cpp" />
     <ClCompile Include="Skrew.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="LineExtracting.h" />
     <ClInclude Include="LineSegmentation.h" />
+    <ClInclude Include="PageSegmentation.h" />
     <ClInclude Include="RectComparator.h" />
     <ClInclude Include="ReleaseFunction.h" />
     <ClInclude Include="Skrew.h" />

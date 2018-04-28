@@ -17,6 +17,7 @@
 #include <opencv2/imgproc.hpp>
 #include "LineExtracting.h"
 #include "Deskew.h"
+#include "PageSegmentation.h"
 
 int main(int argc, char* cargv[])
 {
@@ -152,6 +153,18 @@ int main(int argc, char* cargv[])
 	else if(action == "_segmentLine")
 	{
 		demo::extractLines();
+	}
+	else if(action == "detect")
+	{
+		std::string name;
+		cv::Mat img;
+		std::cout << ">> ";
+		std::cin >> name;
+		
+		loadImg(img, name);
+
+		PageSegmentation ps(img);
+		ps.detect(loadANN(ClassifierPrefix+"28x28_MLP_H0"));
 	}
 
 	currentTime = time(0);
