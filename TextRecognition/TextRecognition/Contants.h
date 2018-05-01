@@ -58,3 +58,13 @@ const int HORIZONTAL_LINE_MORPHOLOGY_KERNEL_SIZE = 40;
 const int HISTOGRAM_BLUR_KERNEL_SIZE = 20;
 
 const cv::Size SAMPLE_SIZE = cv::Size(28, 28);
+
+const int AFFINE_SAMPLES = 10;
+
+const int NOISE_SAMPLES = 3;
+
+const double AFFINE_MAX_ELEMENT = 0.1;
+
+const int AFFINE_ADDITIONAL_ELEMENTS = 3;
+
+const int NOISE_COUNT = 10;

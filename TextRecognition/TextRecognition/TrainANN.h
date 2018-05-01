@@ -69,3 +69,5 @@ template <typename T>
 void writeVec(std::ofstream& out, cv::Mat& vec);
 
 std::vector<cv::Mat> dataAugmentation(cv::Mat& sample);
+
+double fRand(double fMin, double fMax);

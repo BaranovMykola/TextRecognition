@@ -28,6 +28,7 @@
 #include "Deskew.h"
 #include "LetterDetection.h"
 #include <memory>
+#include <set>
 
 using namespace std;
 using namespace cv;
@@ -251,9 +252,46 @@ std::string convertIntToBitArray(int label, int size)
 	return output;
 }
 
+struct lex_compare {
+	bool operator() (const Point& lhs, const Point& rhs) const {
+		return lhs.x < rhs.x;
+	}
+};
+
 std::vector<cv::Mat> dataAugmentation(cv::Mat& sample)
 {
-	return std::vector<cv::Mat>{ sample };
+	std::vector<cv::Mat> samples{ sample };
+
+	for (int i = 0; i < AFFINE_SAMPLES; ++i)
+	{
+		Mat affine(Size(3,2), CV_32F);
+		affine = 0;
+		affine.diag() = 1;
+		vector<Point> pos{ Point(1,0),Point(2,0), Point(0,1),  Point(2,1) };
+		for (int j = 0; j < AFFINE_ADDITIONAL_ELEMENTS; ++j)
+		{
+			double newElement = fRand(0, AFFINE_MAX_ELEMENT);
+			auto beg = pos.begin();
+			std::advance(beg, rand() % pos.size());
+			Point place = *beg;
+			affine.at<float>(place) = newElement;
+			pos.erase(beg);
+		}
+			Mat newSample(sample.size(), CV_8UC1);
+			newSample = 1;
+			warpAffine(sample, newSample, affine, sample.size(), INTER_LINEAR, BORDER_CONSTANT, Scalar::all(1));
+			normalize(newSample, newSample, 0, 255, NORM_MINMAX);
+			Mat origin = sample.clone();
+			normalize(origin, origin, 0, 255, NORM_MINMAX);
+	}
+
+	return samples;
+}
+
+double fRand(double fMin, double fMax)
+{
+	double f = (double)rand() / RAND_MAX;
+	return fMin + f * (fMax - fMin);
 }
 
 template <typename T>
