@@ -68,3 +68,11 @@ const double AFFINE_MAX_ELEMENT = 0.1;
 const int AFFINE_ADDITIONAL_ELEMENTS = 3;
 
 const int NOISE_COUNT = 10;
+
+const int AFFINE_MAX_SHIFT = 2;
+
+const int NOICE_BLACK_COUNT = 10;
+
+const int NOICE_WHITHE_COUNT = 10;
+
+const bool NOICE_RANDOM_COUNT = true;

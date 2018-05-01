@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinaryProcessing.cpp" />
+    <ClCompile Include="DataAugmentation.cpp" />
     <ClCompile Include="Deskew.cpp" />
     <ClCompile Include="FileLoading.cpp" />
     <ClCompile Include="LetterDetection.cpp" />
@@ -174,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="BinaryProcessing.h" />
     <ClInclude Include="Contants.h" />
+    <ClInclude Include="DataAugmentation.h" />
     <ClInclude Include="Deskew.h" />
     <ClInclude Include="FileLoading.h" />
     <ClInclude Include="LetterDetection.h" />
